@@ -1,0 +1,14 @@
+<ion-header>
+  <ion-navbar>
+    <button ion-button menuToggle>
+      <ion-icon name="menu"></ion-icon>
+    </button>
+    <ion-title>{{instrumentoParm.modelo}}-{{instrumentoParm.numero}}</ion-title>
+  </ion-navbar>
+</ion-header>
+
+<ion-tabs>
+  <ion-tab tabTitle="Detalhe" [root]='detalheTab' [rootParams]="instrumentoParm" tabIcon="clipboard"></ion-tab>
+  <ion-tab tabTitle="Leitura" [root]='leituraTab' [rootParams]="instrumentoParm" tabIcon="create"></ion-tab>
+  <ion-tab tabTitle="Últimas Leituras" [root]='historicoTab' [rootParams]="instrumentoParm" tabIcon="funnel"></ion-tab>
+</ion-tabs>

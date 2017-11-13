@@ -1,0 +1,38 @@
+<!-- navbar precisa ficar para deslocar o conteúdo para a posição correta -->
+<ion-header>
+  <ion-navbar> </ion-navbar>
+</ion-header>
+<!-- navbar precisa ficar para deslocar o conteúdo para a posição correta -->
+
+<ion-content>
+  <ion-card class='bordered center'>
+    <ion-card-header>
+      Selecione o instrumento
+    </ion-card-header>
+    <ion-card-content>
+      <ion-item>
+        <ion-label floating>Tipo do Instrumento</ion-label>
+        <ion-select [(ngModel)]='tipoSelected' interface='action-sheet'>
+          <ion-option *ngFor='let tipo of tiposPorUHE' [value]='tipo.id'>
+            {{tipo.sigla}} - {{tipo.nome}}
+          </ion-option>
+        </ion-select>
+      </ion-item>
+
+      <button ion-item outline full [disabled]='(tipoSelected == undefined ? true : false)' (click)='selectInstrumento()'>
+        Instrumento
+        <ion-icon name='arrow-dropright' item-end></ion-icon>
+      </button>
+
+
+
+    </ion-card-content>
+  </ion-card>
+
+  <ion-card class="center">
+    <ion-card-header>
+      Alterne para o modo de código de barras
+      <br/>no menu abaixo.
+    </ion-card-header>
+  </ion-card>
+</ion-content>

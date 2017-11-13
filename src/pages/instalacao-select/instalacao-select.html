@@ -1,0 +1,18 @@
+<ion-header>
+  <ion-navbar>
+    <button ion-button menuToggle>
+      <ion-icon name="menu"></ion-icon>
+    </button>
+    <ion-title>Selecione uma instalação</ion-title>
+  </ion-navbar>
+</ion-header>
+
+<ion-content padding>
+  <ion-list>
+    <button ion-item *ngFor="let uhe of uhesDisponiveis" (click)="uheSelected($event, uhe)" menuToggle>
+      <p>{{uhe.name}}</p>
+      <p><strong>{{uhe.message}}</strong>
+    </button>
+  </ion-list>
+
+</ion-content>

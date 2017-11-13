@@ -1,7 +1,10 @@
 <ion-menu [content]="content">
   <ion-header>
     <ion-toolbar>
-      <ion-title>Menu</ion-title>
+      <button ion-button menuToggle>
+        <ion-icon name="arrow-back"></ion-icon>
+      </button>
+      <ion-title>{{consts.AppName}}</ion-title>
     </ion-toolbar>
   </ion-header>
 
@@ -9,10 +12,24 @@
     <ion-list>
       <button menuClose ion-item *ngFor="let p of pages" (click)="openPage(p)">
         {{p.title}}
+        <p>
+          <small>{{p.message}}</small>
+        </p>
       </button>
     </ion-list>
   </ion-content>
-
+  <ion-footer class='closeFilesFooter' >
+    <button ion-button menuClose full outline class='closeFilesButton' (click)="closeFilesToSISOP()"
+    [disabled]='!showInstrumento'>
+      <ion-list>
+        <ion-item text-center>
+          Finalizar Campanha
+          <br>
+          <small>Prepara arquivos para o SISOP</small>
+        </ion-item>
+      </ion-list>
+    </button>
+  </ion-footer>
 </ion-menu>
 
 <!-- Disable swipe-to-go-back because it's poor UX to combine STGB with side menus -->

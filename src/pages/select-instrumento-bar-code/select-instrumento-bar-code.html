@@ -1,0 +1,27 @@
+<!-- navbar precisa ficar para deslocar o conteúdo para a posição correta -->
+<ion-header>
+  <ion-navbar> </ion-navbar>
+</ion-header>
+<!-- navbar precisa ficar para deslocar o conteúdo para a posição correta -->
+
+<ion-content>
+  <ion-card class='bordered center'>
+    <ion-card-header>
+      Efetue a leitura do código de barras
+    </ion-card-header>
+    <ion-card-content>
+      <ion-item>
+        <button item-right ion-button (click)='readBarcode()' icon-only large>
+          <ion-icon name="search"></ion-icon>
+        </button>
+        <ion-input [(ngModel)]='readCode' [disabled]='true'></ion-input>
+      </ion-item>
+    </ion-card-content>
+  </ion-card>
+
+  <ion-card class="center">
+    <ion-card-header>
+      Alterne para o modo de digitação<br/>no menu abaixo.
+    </ion-card-header>
+  </ion-card>
+</ion-content>

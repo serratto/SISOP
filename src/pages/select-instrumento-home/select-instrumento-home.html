@@ -1,0 +1,13 @@
+<ion-header>
+  <ion-navbar>
+    <button ion-button menuToggle>
+      <ion-icon name="menu"></ion-icon>
+    </button>
+    <ion-title>{{selectedUhe.name}} - ECSB</ion-title>
+  </ion-navbar>
+</ion-header>
+
+<ion-tabs>
+  <ion-tab tabTitle="Código de Barras" [root]='barcodeTab' [rootParams]="selectedUhe" tabIcon="barcode"></ion-tab>
+  <ion-tab tabTitle="Digitar..." [root]='typingTab' [rootParams]="selectedUhe" tabIcon="clipboard"></ion-tab>
+</ion-tabs>

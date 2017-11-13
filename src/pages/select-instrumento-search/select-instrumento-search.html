@@ -1,0 +1,24 @@
+<!-- navbar precisa ficar para deslocar o conteúdo para a posição correta -->
+<ion-header>
+  <ion-navbar>
+  </ion-navbar>
+  <ion-toolbar color="primary" text-center>
+    <ion-title> {{tipoSelected.sigla}} - {{tipoSelected.nome}}</ion-title>
+    <ion-searchbar placeholder="digite para filtrar" (ionInput)="atualizaInstrumentos($event)"></ion-searchbar>
+  </ion-toolbar>
+</ion-header>
+<!-- navbar precisa ficar para deslocar o conteúdo para a posição correta -->
+<ion-content>
+  <ion-list>
+    <ion-item *ngFor="let instrumento of instrFilter">
+      <button (click)='selectInstrumento($event, instrumento)' ion-button full clear>
+        <ion-grid no-padding>
+          <ion-row>
+            <ion-col width-70 align-items-start>{{instrumento.modelo}}-{{instrumento.numero}}</ion-col>
+            <ion-col align-items-end>{{instrumento.estado}}</ion-col>
+          </ion-row>
+        </ion-grid>
+      </button>
+    </ion-item>
+  </ion-list>
+</ion-content>

@@ -1,5 +1,8 @@
 {
   "name": "Instrumentos",
-  "app_id": "",
-  "type": "ionic-angular"
+  "app_id": "12e16760",
+  "type": "ionic-angular",
+  "integrations": {
+    "cordova": {}
+  }
 }

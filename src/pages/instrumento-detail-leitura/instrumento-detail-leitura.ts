@@ -1,22 +1,17 @@
 import { Component } from '@angular/core';
 import { IonicPage, NavController, NavParams } from 'ionic-angular';
-import { Constants } from "../../shared/shared";
 
 @IonicPage()
 @Component({
-  selector: 'page-home',
-  templateUrl: 'home.html',
+  selector: 'page-instrumento-detail-leitura',
+  templateUrl: 'instrumento-detail-leitura.html',
 })
-
-export class HomePage {
-
-  consts: Constants;
+export class InstrumentoDetailLeituraPage {
 
   constructor(public navCtrl: NavController, public navParams: NavParams) {
-    this.consts = new Constants();
+    console.log('InstrumentoDetailLeituraPage PARMS:',this.navParams.data);
   }
 
   ionViewDidLoad() {
-
   }
 }
