@@ -321,50 +321,50 @@ export class StorageLoadData {
         }
         return Promise.resolve();
     }
-    private carregaUltimas12Leituras(jsonData: object): Promise<any> {
-        var lenInstr = jsonData['Instrumentos'].length;
-        for (var index = 0; index < lenInstr; index++) {
-            let instrumento = jsonData['Instrumentos'][index];
-            var lenleit = instrumento['UltimasLeituras'].length;
+    // private carregaUltimas12Leituras(jsonData: object): Promise<any> {
+    //     var lenInstr = jsonData['Instrumentos'].length;
+    //     for (var index = 0; index < lenInstr; index++) {
+    //         let instrumento = jsonData['Instrumentos'][index];
+    //         var lenleit = instrumento['UltimasLeituras'].length;
 
-            for (var index2 = 0; index2 < lenleit; index2++) {
-                console.log('instrumento ' + index + ' de ' + lenInstr +
-                    ' leitura ' + index2 + 'de ' + lenleit);
-                let ultimaLeitura = instrumento['UltimasLeituras'][index2];
-                var args = [];
-                let command = 'insert or replace into Ultimas12Leituras ' +
-                    '(leituraId, instrumentoId, dataLeitura, nivelDagua' +
-                    ',situacaoLeituraId, observacao)' +
-                    ' values ' +
-                    '(?, ?, ?, ?, ?, ?)';
-                args.push(ultimaLeitura.Id);
-                args.push(instrumento.Id);
-                args.push(ultimaLeitura.DataLeitura);
-                args.push(ultimaLeitura.NivelDagua);
-                args.push(ultimaLeitura.SituacaoLeituraId);
-                args.push(ultimaLeitura.Observacao);
-                this._sql.executeQuery(command, args);
-                    // .then(() => Promise.resolve())
-                    // .catch((err) => Promise.reject(err));
+    //         for (var index2 = 0; index2 < lenleit; index2++) {
+    //             console.log('instrumento ' + index + ' de ' + lenInstr +
+    //                 ' leitura ' + index2 + 'de ' + lenleit);
+    //             let ultimaLeitura = instrumento['UltimasLeituras'][index2];
+    //             var args = [];
+    //             let command = 'insert or replace into Ultimas12Leituras ' +
+    //                 '(leituraId, instrumentoId, dataLeitura, nivelDagua' +
+    //                 ',situacaoLeituraId, observacao)' +
+    //                 ' values ' +
+    //                 '(?, ?, ?, ?, ?, ?)';
+    //             args.push(ultimaLeitura.Id);
+    //             args.push(instrumento.Id);
+    //             args.push(ultimaLeitura.DataLeitura);
+    //             args.push(ultimaLeitura.NivelDagua);
+    //             args.push(ultimaLeitura.SituacaoLeituraId);
+    //             args.push(ultimaLeitura.Observacao);
+    //             this._sql.executeQuery(command, args);
+    //                 // .then(() => Promise.resolve())
+    //                 // .catch((err) => Promise.reject(err));
 
-                /* Carrega Valores */
-                // for (var index3 = 0; index3 < ultimaLeitura['Valores'].length; index3++) {
-                //     let valores = ultimaLeitura['Valores'][index3];
-                //     var argsVal = [];
-                //     let commandVal = 'insert or replace into LeituraValor ' +
-                //         '(leituraId, templateLeituraId, sequencial, valor) ' +
-                //         ' values ' +
-                //         '(?, ?, ?, ?)';
-                //     argsVal.push(valores.LeituraId);
-                //     argsVal.push(valores.TemplateLeituraId);
-                //     argsVal.push(valores.Sequencial);
-                //     argsVal.push(valores.Valor);
-                //     this._sql.executeQuery(commandVal, argsVal)
-                //         .then(() => Promise.resolve())
-                //         .catch((err) => Promise.reject(err));
-                // }
-            }
-        }
-        return Promise.resolve();
-    }
+    //             /* Carrega Valores */
+    //             // for (var index3 = 0; index3 < ultimaLeitura['Valores'].length; index3++) {
+    //             //     let valores = ultimaLeitura['Valores'][index3];
+    //             //     var argsVal = [];
+    //             //     let commandVal = 'insert or replace into LeituraValor ' +
+    //             //         '(leituraId, templateLeituraId, sequencial, valor) ' +
+    //             //         ' values ' +
+    //             //         '(?, ?, ?, ?)';
+    //             //     argsVal.push(valores.LeituraId);
+    //             //     argsVal.push(valores.TemplateLeituraId);
+    //             //     argsVal.push(valores.Sequencial);
+    //             //     argsVal.push(valores.Valor);
+    //             //     this._sql.executeQuery(commandVal, argsVal)
+    //             //         .then(() => Promise.resolve())
+    //             //         .catch((err) => Promise.reject(err));
+    //             // }
+    //         }
+    //     }
+    //     return Promise.resolve();
+    // }
 }

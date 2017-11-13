@@ -4,7 +4,6 @@ import {
   LoadingController, AlertController
 } from 'ionic-angular';
 import { GlobalVariables, StorageManager } from "../../shared/shared";
-import _ from 'lodash';
 
 @IonicPage()
 @Component({
