@@ -20,6 +20,7 @@
     "@angular/http": "4.4.4",
     "@angular/platform-browser": "4.4.4",
     "@angular/platform-browser-dynamic": "4.4.4",
+    "@angular/tsc-wrapped": "^4.4.6",
     "@ionic-native/barcode-scanner": "^4.3.3",
     "@ionic-native/core": "4.3.2",
     "@ionic-native/file": "^4.3.2",
