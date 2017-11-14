@@ -74,4 +74,8 @@ export class SelectInstrumentoSearchPage {
     this.globalVars.instrumentoSelecionado = selected;
     this.navCtrl.pop()
   }
+
+  closeThis(){
+    this.navCtrl.pop()
+  }
 }

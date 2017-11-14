@@ -5,6 +5,7 @@ import {
 } from './shared';
 import { ISQLProvider, UHEFile } from './shared';
 import { ProcessFile, Constants } from './shared';
+import _ from 'lodash';
 
 @Injectable()
 export class StorageManager {
@@ -50,7 +51,6 @@ export class StorageManager {
                     resolve(null);
                 })
                 .catch(err => {
-                    console.log(err);
                     reject(err);
                 });
         });
@@ -95,7 +95,6 @@ export class StorageManager {
             this._sql.executeQuery(command, args)
                 .then(data => { resolve(); })
                 .catch(err => {
-                    console.log(err);
                     reject(err);
                 });
         });
@@ -116,7 +115,8 @@ export class StorageManager {
             'Instrumento',
             'LabelLeitura',
             'Ultimas12Leituras',
-            'LeituraValor'
+            'LeituraValor',
+            'MudancaEstado'
         ];
         for (var index = 0; index < tabs.length; index++) {
             let command = 'delete from ' + tabs[index];
@@ -130,12 +130,10 @@ export class StorageManager {
                 .then((jsonString) => {
                     this._processFile.parseJsonFromUHE(jsonString)
                         .then((jsonData) => {
-                            // console.log(jsonData);
                             resolve(jsonData);
                         })
                         .catch((err) => {
                             reject(err);
-                            console.log(err);
                         })
                 })
         });
@@ -208,7 +206,8 @@ export class StorageManager {
         let comm = "select ti.id as 'id', ti.sigla as 'sigla', ti.nome as 'nome' " +
             "from TipoInstrumento ti join " +
             "     TipoInstrumentoPorInstalacao tipi  on ti.id = tipi.tipoInstrumentoId " +
-            "where tipi.usinaId = ? ";
+            "where tipi.usinaId = ? " +
+            "order by ti.sigla";
         let args = [];
         args.push(usinaId);
 
@@ -240,11 +239,11 @@ export class StorageManager {
     }
 
     public getInstrumento(instrumentoId: number): Promise<any> {
-        console.log (instrumentoId);
-        let comm = "select m.sigla, substr('0000' || i.numero, -4, 4) as 'numero', " +
+        let comm = "select i.id as 'id', m.sigla, substr('0000' || i.numero, -4, 4) as 'numero', " +
+            "m.sigla as 'siglamodelo', m.nome as 'nomemodelo', " +
             "i.codigobarra, i.estaca, i.afastamento, e.nome as 'estado', " +
             "el.nome as 'estruturalocalizacao', s.nome as 'secao', " +
-            "elm.nome as 'elemento' " +
+            "elm.nome as 'elemento', ti.sigla as 'siglatipo', ti.nome as 'nometipo' " +
             "from Instrumento i " +
             "join modelos m on i.modeloid = m.id " +
             "join tipoinstrumento ti on i.tipoinstrumentoid = ti.id " +
@@ -260,5 +259,52 @@ export class StorageManager {
                 .then((data) => resolve(data))
                 .catch((err) => reject(err));
         });
+    }
+
+    public saveStateInstrumento(instrumentoId: number, estadoId: number): Promise<any> {
+        var args = [];
+        let command = 'insert or replace into MudancaEstado ' +
+            '(instrumentoId, estadoId)'
+            + ' values (?, ?)';
+        args.push(instrumentoId);
+        args.push(estadoId);
+        return new Promise<any>((resolve, reject) => {
+            this._sql.executeQuery(command, args)
+                .then(() => { resolve(); })
+                .catch((err) => {
+                    reject(err);
+                    return;
+                });
+        });
+    }
+
+    public getStateChangedInstrumento(instrumentoId: number): Promise<any> {
+        var args = [];
+        let command = 'select estadoId from MudancaEstado ' +
+            'where instrumentoId = ?';
+        args.push(instrumentoId);
+        return new Promise<any>((resolve, reject) => {
+            this._sql.executeQuery(command, args)
+                .then((data) => resolve(data))
+                .catch((err) => reject(err));
+        });
+    }
+
+    public getUltimasLeituras(uheFile: UHEFile, instrumentoId: number): Promise<any> {
+        var promise = new Promise<any>((resolve, reject) => {
+            this._processFile.readFile(uheFile.fileName)
+                .then((jsonString) => {
+                    this._processFile.parseJsonFromUHE(jsonString)
+                        .then((jsonData) => {
+                            var lastRead = _.find(jsonData['Instrumentos'],
+                                function (i) { return i.Id == instrumentoId });
+                            resolve(lastRead);
+                        })
+                        .catch((err) => {
+                            reject(err);
+                        })
+                })
+        });
+        return promise;
     }
 }

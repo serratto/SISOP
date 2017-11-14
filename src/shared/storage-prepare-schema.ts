@@ -36,7 +36,8 @@ export class StoragePrepareSchema {
                 this.createInstrumento(),
                 this.createLabelLeitura(),
                 this.createUltimas12Leituras(),
-                this.createLeituraValor()
+                this.createLeituraValor(),
+                this.createStateChange()
                 ])
                 .then(() => { resolve(); })
                 .catch((err) => {
@@ -299,5 +300,19 @@ export class StoragePrepareSchema {
                     return;
                 })
         });
+    }
+    private createStateChange():Promise<any>{
+            return new Promise((resolve, reject) => {
+                let command = 'CREATE TABLE IF NOT EXISTS MudancaEstado ' +
+                    '(instrumentoId bigint primary key, ' +
+                    'estadoId bigint)';
+                this._sql.executeNonQuery(command)
+                    .then(() => { resolve(); })
+                    .catch((err) => {
+                        reject(err);
+                        return;
+                    })
+            });
+    
     }
 }

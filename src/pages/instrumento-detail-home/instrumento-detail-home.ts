@@ -22,7 +22,6 @@ export class InstrumentoDetailHomePage {
 
   constructor(public navCtrl: NavController, public navParams: NavParams) {
     this.instrumentoParm = this.navParams.data;
-    console.log('InstrumentoDetailHomePage PARMS:', this.navParams.data);
   }
 
   ionViewDidLoad() {

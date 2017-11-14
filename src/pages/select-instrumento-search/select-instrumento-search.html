@@ -5,6 +5,11 @@
   <ion-toolbar color="primary" text-center>
     <ion-title> {{tipoSelected.sigla}} - {{tipoSelected.nome}}</ion-title>
     <ion-searchbar placeholder="digite para filtrar" (ionInput)="atualizaInstrumentos($event)"></ion-searchbar>
+    <ion-buttons end>
+      <button ion-button icon-only (click)='closeThis()'>
+        <ion-icon name='close'></ion-icon>
+      </button>
+    </ion-buttons>
   </ion-toolbar>
 </ion-header>
 <!-- navbar precisa ficar para deslocar o conteúdo para a posição correta -->

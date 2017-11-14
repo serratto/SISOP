@@ -6,4 +6,11 @@
 <!-- navbar precisa ficar para deslocar o conteúdo para a posição correta -->
 <ion-content padding>
   HISTORICO
+  <ion-list *ngIf="isDataAvailable">
+    <ion-item *ngfor="let leitura of leituras">
+      <ion-row>
+        <ion-col>{{leitura.DataLeitura}}</ion-col>
+      </ion-row>
+    </ion-item>
+  </ion-list>
 </ion-content>
