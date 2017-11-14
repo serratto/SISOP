@@ -13,7 +13,7 @@ import { GlobalVariables, StorageManager } from "../../shared/shared";
 export class InstrumentoDetailHistoricoPage {
 
   instrumento: any;
-  leituras = [];
+  leituras: Array<any> = [];
 
   isDataAvailable: boolean = false;
 
