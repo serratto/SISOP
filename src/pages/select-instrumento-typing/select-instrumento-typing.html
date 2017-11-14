@@ -12,7 +12,7 @@
     <ion-card-content>
       <ion-item>
         <ion-label color="primary" stacked>Tipo do Instrumento</ion-label>
-        <ion-select [(ngModel)]='tipoSelected' interface='action-sheet'>
+        <ion-select [(ngModel)]='tipoSelected' interface='action-sheet' (ngModelChange)='onChange()'>
           <ion-option *ngFor='let tipo of tiposPorUHE' [value]='tipo.id'>
             {{tipo.sigla}} - {{tipo.nome}}
           </ion-option>

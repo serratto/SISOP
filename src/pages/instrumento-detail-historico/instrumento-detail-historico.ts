@@ -35,13 +35,13 @@ export class InstrumentoDetailHistoricoPage {
         .then((uhe) => {
           this.stMan.getUltimasLeituras(uhe, this.instrumento.id)
             .then((leit) => {
-              // this.leituras = leit.UltimasLeituras;
-              this.leituras.push(leit.UltimasLeituras);
+              this.leituras = leit.UltimasLeituras;
               this.isDataAvailable = true;
+              loader.dismiss();
               console.log(this.leituras);
             })
-            .catch(() => { })
-          loader.dismiss();
+            .catch(() => { loader.dismiss(); })
+
         })
         .catch((err) => {
           let alert = this.alert.create({
@@ -53,9 +53,6 @@ export class InstrumentoDetailHistoricoPage {
           alert.present();
           loader.dismiss();
         });
-
     });
-
   }
-
 }

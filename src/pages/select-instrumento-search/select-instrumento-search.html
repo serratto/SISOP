@@ -14,16 +14,26 @@
 </ion-header>
 <!-- navbar precisa ficar para deslocar o conteúdo para a posição correta -->
 <ion-content>
+  <ion-toolbar style='position:fixed'>
+    <ion-grid no-padding>
+      <ion-row>
+        <ion-col class='ttLeft' col-8>Instrumento</ion-col>
+        <ion-col class='ttRight'>Estado</ion-col>
+      </ion-row>
+    </ion-grid>
+  </ion-toolbar>
+  <ion-toolbar class='transparente'>
+  </ion-toolbar>
   <ion-list>
     <ion-item *ngFor="let instrumento of instrFilter">
-      <button (click)='selectInstrumento($event, instrumento)' ion-button full clear>
-        <ion-grid no-padding>
-          <ion-row>
-            <ion-col width-70 align-items-start>{{instrumento.modelo}}-{{instrumento.numero}}</ion-col>
-            <ion-col align-items-end>{{instrumento.estado}}</ion-col>
-          </ion-row>
-        </ion-grid>
-      </button>
+      <ion-grid no-padding>
+        <ion-row>
+          <button (click)='selectInstrumento($event, instrumento)' ion-button outline full clear color='light'>
+            <ion-col class='btLeft' col-8>{{instrumento.modelo}}-{{instrumento.numero}}</ion-col>
+            <ion-col class='btRight'>{{instrumento.estado}}</ion-col>
+          </button>
+        </ion-row>
+      </ion-grid>
     </ion-item>
   </ion-list>
 </ion-content>

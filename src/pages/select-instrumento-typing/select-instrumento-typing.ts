@@ -71,4 +71,10 @@ export class SelectInstrumentoTypingPage {
     var parms = { tipoSelected: tipo, usina: this.usinaId };
     this.navCtrl.push(SelectInstrumentoSearchPage, parms);
   }
+
+  onChange(){
+    var tipo = _.find(this.tiposPorUHE, { 'id': this.tipoSelected });
+    var parms = { tipoSelected: tipo, usina: this.usinaId };
+    this.navCtrl.push(SelectInstrumentoSearchPage, parms);
+  }
 }

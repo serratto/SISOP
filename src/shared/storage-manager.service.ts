@@ -224,7 +224,7 @@ export class StorageManager {
             ", e.nome as 'estado'" +
             " from instrumento i " +
             " join modelos m on i.modeloId = m.id " +
-            " join estados e on i.estadoId = e.id" +
+            " join estados e on i.estadoId = e.id " +
             " where i.usinaid = ? and tipoinstrumentoid = ?" +
             " order by i.numero "
             ;

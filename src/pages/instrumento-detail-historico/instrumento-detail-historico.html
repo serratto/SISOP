@@ -7,7 +7,7 @@
 <ion-content padding>
   HISTORICO
   <ion-list *ngIf="isDataAvailable">
-    <ion-item >
+    <ion-item *ngFor="let leitura of leituras">
       <ion-row>
         <ion-col>{{leitura.DataLeitura}}</ion-col>
       </ion-row>

@@ -38,26 +38,26 @@ export class InstalacaoSelectPage {
   refreshUHEList() {
     this.uhesDisponiveis = [];
 
-    this.file.listDir(this.file.externalApplicationStorageDirectory, 'files')
-      .then(fileList => {
-        if (fileList.length == 0) {
-          let t = this.toast.create({
-            message: 'Não existem arquivos de Usinas para processamento, favor verificar.',
-            position: 'bottom',
-            showCloseButton: true
-          });
-          t.present();
-        }
-        else {
-          this.globalVar.getCurrentUHE()
-            .then(uhe => {
-              this.fillUhesDisponiveis(fileList, uhe);
-            })
-            .catch(() => this.fillUhesDisponiveis(fileList, null));
-        }
-      })
-      .catch(exp => {
-        if (exp == "cordova_not_available") {
+    // this.file.listDir(this.file.externalApplicationStorageDirectory, 'files')
+    //   .then(fileList => {
+    //     if (fileList.length == 0) {
+    //       let t = this.toast.create({
+    //         message: 'Não existem arquivos de Usinas para processamento, favor verificar.',
+    //         position: 'bottom',
+    //         showCloseButton: true
+    //       });
+    //       t.present();
+    //     }
+    //     else {
+    //       this.globalVar.getCurrentUHE()
+    //         .then(uhe => {
+    //           this.fillUhesDisponiveis(fileList, uhe);
+    //         })
+    //         .catch(() => this.fillUhesDisponiveis(fileList, null));
+    //     }
+    //   })
+    //   .catch(exp => {
+    //     if (exp == "cordova_not_available") {
           this.globalVar.getCurrentUHE()
             .then(uhe => {
               var fileList: Array<{ name: string }>;
@@ -68,10 +68,10 @@ export class InstalacaoSelectPage {
               fileList.push({ name: '07_UHE Taquarucu.json' });
               this.fillUhesDisponiveis(fileList, uhe);
             });
-        } else {
-          console.log('Erro ao validar arquivos', JSON.stringify(exp));
-        }
-      });
+      //   } else {
+      //     console.log('Erro ao validar arquivos', JSON.stringify(exp));
+      //   }
+      // });
   }
 
   fillUhesDisponiveis(fileList: Array<any>, uhe: any) {

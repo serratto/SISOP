@@ -1,3 +1,29 @@
 page-select-instrumento-search {
 
 }
+.transparente, .transparente div{
+    background-color: transparent !important;
+}
+.btLeft, .btRight{
+    color: #000 !important;
+    font-size: 16px !important;
+    font-weight: 400 !important;
+}
+.btLeft{
+    text-align: left !important;
+} 
+.btRight{
+    text-align: right  !important;
+}
+
+.ttLeft, .ttRight{
+    font-size: 16px !important;
+    font-weight: 600 !important;
+}
+.ttLeft{
+    padding-left: 15px !important;;
+    text-align: left !important;
+}
+.ttRight{
+    padding-right: 35px !important;
+}
