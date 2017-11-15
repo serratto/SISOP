@@ -6,4 +6,5 @@ export class UHEFile {
     public name: string;
     public fileName: string;
     public usinaId: number;
+    public sigla: number;
 }

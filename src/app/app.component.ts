@@ -5,8 +5,7 @@ import { SplashScreen } from '@ionic-native/splash-screen';
 import { Events } from 'ionic-angular';
 
 import { HomePage, InstalacaoSelectPage, SelectInstrumentoHomePage } from '../pages/pages';
-
-import { GlobalVariables, StorageManager, Constants } from '../shared/shared';
+import { StorageManager, SISOPGlobals } from '../shared/shared';
 
 @Component({
   templateUrl: 'app.html'
@@ -14,7 +13,7 @@ import { GlobalVariables, StorageManager, Constants } from '../shared/shared';
 export class MyApp {
   @ViewChild(Nav) nav: Nav;
 
-  consts: Constants;
+  _globals: SISOPGlobals;
   showInstrumento: boolean = false;
   rootPage: any = HomePage;
 
@@ -23,11 +22,10 @@ export class MyApp {
   constructor(public platform: Platform,
     public statusBar: StatusBar,
     public splashScreen: SplashScreen,
-    private globalVars: GlobalVariables,
     private storageManager: StorageManager,
     private events: Events) {
+    this._globals = new SISOPGlobals();
     this.initializeApp();
-    this.consts = new Constants();
   }
 
   initializeApp() {
@@ -36,12 +34,15 @@ export class MyApp {
       // Here you can do any higher level native things you might need.
       this.statusBar.styleDefault();
 
+
       this.storageManager.initializeKV()
         .then(ok => {
           this.refreshMenu();
-          this.events.subscribe('uheselected:changed', () => this.refreshMenu());
+          this.events.subscribe('uheselected:changed', () => {
+            this.refreshMenu();
+          });
         })
-        .catch(err => console.log(err));
+        .catch(err => console.log('app.components initializeKV', err));
 
       this.splashScreen.hide();
     });
@@ -56,7 +57,7 @@ export class MyApp {
   refreshMenu() {
     /**/
     this.pages = [];
-    this.globalVars.getCurrentUHE().then(data => {
+    this._globals.getCurrentUHE().then(data => {
       this.showInstrumento = false;
       /* Se tiver uma UHE Selecionada */
       if (data) {

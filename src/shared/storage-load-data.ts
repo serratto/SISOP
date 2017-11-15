@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { StorageSql, StorageWeb } from './shared';
+import { StorageSql, StorageWeb, SISOPEnvironment } from './shared';
 import { ISQLProvider } from './shared';
 import _ from 'lodash';
 
@@ -7,8 +7,9 @@ import _ from 'lodash';
 export class StorageLoadData {
     private _web: boolean;
     private _sql: ISQLProvider;
+
     constructor() {
-        if (!document.URL.startsWith('http')) {
+        if (SISOPEnvironment.isAndroid()) {
             this._web = false;
             this._sql = new StorageSql();
         }
@@ -77,15 +78,16 @@ export class StorageLoadData {
     private carregaTemplateLeitura(jsonData: object): Promise<any> {
         var args = [];
         let command = 'insert or replace into TemplateLeitura ' +
-            '(id, tipoInstrumentoId, sequencia, sigla, nome)'
+            '(id, tipoInstrumentoId, modeloInstrumentoId, sequencia, sigla, nome)'
             + ' values ';
         _.forEach(jsonData['LeituraStructure']['TemplateLeitura'], function (item) {
             args.push(item.Id)
             args.push(item.TipoInstrumentoId);
+            args.push(item.ModeloInstrumentoId);
             args.push(item.Sequencia);
             args.push(item.Sigla);
             args.push(item.Nome);
-            command += '(?, ?, ?, ?, ?),';
+            command += '(?, ?, ?, ?, ?, ?),';
         });
         command = command.substring(0, command.length - 1);
         return new Promise<any>((resolve, reject) => {
@@ -122,7 +124,7 @@ export class StorageLoadData {
     private carregaVariavelLeituraSituacao(jsonData: object): Promise<any> {
         var args = [];
         let command = 'insert or replace into VariavelLeituraSituacao ' +
-            '(tipoInstrumentoId, situacaoLeituraId, modeloInstrumentId, templateLeituraId, unidadeMedida)'
+            '(tipoInstrumentoId, situacaoLeituraId, modeloInstrumentoId, templateLeituraId, unidadeMedida)'
             + ' values ';
         _.forEach(jsonData['LeituraStructure']['VariavelLeituraSituacao'], function (item) {
             args.push(item.TipoInstrumentoId)
@@ -321,50 +323,4 @@ export class StorageLoadData {
         }
         return Promise.resolve();
     }
-    // private carregaUltimas12Leituras(jsonData: object): Promise<any> {
-    //     var lenInstr = jsonData['Instrumentos'].length;
-    //     for (var index = 0; index < lenInstr; index++) {
-    //         let instrumento = jsonData['Instrumentos'][index];
-    //         var lenleit = instrumento['UltimasLeituras'].length;
-
-    //         for (var index2 = 0; index2 < lenleit; index2++) {
-    //             console.log('instrumento ' + index + ' de ' + lenInstr +
-    //                 ' leitura ' + index2 + 'de ' + lenleit);
-    //             let ultimaLeitura = instrumento['UltimasLeituras'][index2];
-    //             var args = [];
-    //             let command = 'insert or replace into Ultimas12Leituras ' +
-    //                 '(leituraId, instrumentoId, dataLeitura, nivelDagua' +
-    //                 ',situacaoLeituraId, observacao)' +
-    //                 ' values ' +
-    //                 '(?, ?, ?, ?, ?, ?)';
-    //             args.push(ultimaLeitura.Id);
-    //             args.push(instrumento.Id);
-    //             args.push(ultimaLeitura.DataLeitura);
-    //             args.push(ultimaLeitura.NivelDagua);
-    //             args.push(ultimaLeitura.SituacaoLeituraId);
-    //             args.push(ultimaLeitura.Observacao);
-    //             this._sql.executeQuery(command, args);
-    //                 // .then(() => Promise.resolve())
-    //                 // .catch((err) => Promise.reject(err));
-
-    //             /* Carrega Valores */
-    //             // for (var index3 = 0; index3 < ultimaLeitura['Valores'].length; index3++) {
-    //             //     let valores = ultimaLeitura['Valores'][index3];
-    //             //     var argsVal = [];
-    //             //     let commandVal = 'insert or replace into LeituraValor ' +
-    //             //         '(leituraId, templateLeituraId, sequencial, valor) ' +
-    //             //         ' values ' +
-    //             //         '(?, ?, ?, ?)';
-    //             //     argsVal.push(valores.LeituraId);
-    //             //     argsVal.push(valores.TemplateLeituraId);
-    //             //     argsVal.push(valores.Sequencial);
-    //             //     argsVal.push(valores.Valor);
-    //             //     this._sql.executeQuery(commandVal, argsVal)
-    //             //         .then(() => Promise.resolve())
-    //             //         .catch((err) => Promise.reject(err));
-    //             // }
-    //         }
-    //     }
-    //     return Promise.resolve();
-    // }
 }

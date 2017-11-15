@@ -3,7 +3,7 @@ import {
   IonicPage, NavController, NavParams,
   LoadingController, AlertController
 } from 'ionic-angular';
-import { GlobalVariables, StorageManager } from "../../shared/shared";
+import { SISOPGlobals, StorageManager } from "../../shared/shared";
 import _ from 'lodash';
 
 @IonicPage()
@@ -12,24 +12,22 @@ import _ from 'lodash';
   templateUrl: 'select-instrumento-search.html',
 })
 export class SelectInstrumentoSearchPage {
-
-  constructor(public navCtrl: NavController,
-    public navParams: NavParams,
-    private loadingController: LoadingController,
-    public stMan: StorageManager,
-    public globalVars: GlobalVariables,
-    private alert: AlertController, ) {
-
-    this.tipoSelected = this.navParams.data.tipoSelected;
-    this.usinaId = this.navParams.data.usina;
-  }
-
-
   tipoSelected: any;
   usinaId: any;
   instrumentos: Array<any>;
   instrFilter = [];
   queryText: string = '';
+
+  constructor(public navCtrl: NavController,
+    public navParams: NavParams,
+    private loadingController: LoadingController,
+    public _globals: SISOPGlobals,
+    public stMan: StorageManager,
+    private alert: AlertController, ) {
+
+    this.tipoSelected = this.navParams.data.tipoSelected;
+    this.usinaId = this.navParams.data.usina;
+  }
 
   ionViewDidLoad() {
     let loader = this.loadingController.create({
@@ -71,11 +69,11 @@ export class SelectInstrumentoSearchPage {
   }
 
   selectInstrumento(evt, selected) {
-    this.globalVars.instrumentoSelecionado = selected;
-    this.navCtrl.pop()
+    this._globals.instrumentoSelecionado = selected;
+    this.navCtrl.pop();
   }
 
-  closeThis(){
+  closeThis() {
     this.navCtrl.pop()
   }
 }

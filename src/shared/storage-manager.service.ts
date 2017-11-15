@@ -1,11 +1,13 @@
 import { Injectable } from '@angular/core';
 import {
     StorageSql, StorageWeb,
-    StoragePrepareSchema, StorageLoadData
+    StoragePrepareSchema, StorageLoadData,
+    SISOPEnvironment
 } from './shared';
 import { ISQLProvider, UHEFile } from './shared';
-import { ProcessFile, Constants } from './shared';
+import { ProcessFile } from './shared';
 import _ from 'lodash';
+
 
 @Injectable()
 export class StorageManager {
@@ -13,16 +15,14 @@ export class StorageManager {
     private _web: boolean;
     private _sql: ISQLProvider;
     private _processFile: ProcessFile;
-    private _consts: Constants;
     private _prepareSchema: StoragePrepareSchema;
     private _loadData: StorageLoadData;
     constructor() {
         this._processFile = new ProcessFile();
-        this._consts = new Constants();
         this._prepareSchema = new StoragePrepareSchema();
         this._loadData = new StorageLoadData();
 
-        if (!document.URL.startsWith('http')) {
+        if (SISOPEnvironment.useSQLlite) {
             this._web = false;
             this._sql = new StorageSql();
         }
@@ -33,12 +33,12 @@ export class StorageManager {
     }
 
     public initializeKV(): Promise<any> {
-        let command = 'CREATE TABLE IF NOT EXISTS ' + this._consts.KeyValueTable + ' (key text primary key, value text)';
+        let command = 'CREATE TABLE IF NOT EXISTS kvPairTable (key text primary key, value text)';
         return this._sql.executeNonQuery(command);
     }
 
     getCurrentUHE(): Promise<UHEFile> {
-        let command = 'SELECT key, value from ' + this._consts.KeyValueTable + ' where key = ?';
+        let command = 'SELECT key, value from kvPairTable where key = ?';
         let arg = ['currentuhe'];
 
         var promise = new Promise<UHEFile>((resolve, reject) => {
@@ -67,6 +67,7 @@ export class StorageManager {
                     this.processaArquivo(jsonData)
                         .then(() => {/* com o parse correto, seta a uhe nas preferências */
                             selected.usinaId = jsonData['Usina'].Id;
+                            selected.sigla = jsonData['Usina'].Sigla;
                             this.setUHENasPreferencias(selected)
                                 .then(() => resolve())
                                 .catch((err) => {
@@ -90,7 +91,7 @@ export class StorageManager {
 
     private setUHENasPreferencias(selected: UHEFile): Promise<any> {
         return new Promise<any>((resolve, reject) => {
-            let command = 'insert or replace into ' + this._consts.KeyValueTable + '(key, value) values (?, ?)';
+            let command = 'insert or replace into kvPairTable (key, value) values (?, ?)';
             let args = ['currentuhe', JSON.stringify(selected)];
             this._sql.executeQuery(command, args)
                 .then(data => { resolve(); })
@@ -222,9 +223,13 @@ export class StorageManager {
         let comm = " select i.id, m.sigla as 'modelo', " +
             "substr('0000'|| i.numero,-4, 4) as 'numero'" +
             ", e.nome as 'estado'" +
+            ", m.id as 'modeloid' " +
+            ", ti.multiponto as 'multiponto' " +
+            ", ti.id as 'tipoInstrumentoId' " +
             " from instrumento i " +
             " join modelos m on i.modeloId = m.id " +
             " join estados e on i.estadoId = e.id " +
+            " join tipoinstrumento ti on ti.id = i.tipoinstrumentoid" +
             " where i.usinaid = ? and tipoinstrumentoid = ?" +
             " order by i.numero "
             ;
@@ -306,5 +311,43 @@ export class StorageManager {
                 })
         });
         return promise;
+    }
+
+    public getSituacaoLeitura(situacaoLeituraId: number): Promise<any> {
+        var args = [];
+        let command = 'select id, sigla, nome from SituacaoLeitura where id = ?';
+        args.push(situacaoLeituraId);
+        return new Promise<any>((resolve, reject) => {
+            this._sql.executeQuery(command, args)
+                .then((data) => resolve(data))
+                .catch((err) => reject(err));
+        });
+    }
+
+    public getTemplateLeituraByTipoInstrumento(tipoInstrumentoId: number,
+        situacaoLeituraId: number, modeloInstrumentoId: number): Promise<any> {
+        var args = [];
+        let command = " select tl.id as 'templateleituraid', tl.tipoinstrumentoid as 'tipoinstrumentoid',  " +
+            " tl.sequencia as 'seqleitura', tl.sigla as 'sigla', tl.nome as 'nome'  " +
+            " from TemplateLeitura tl, " +
+            "      variavelleiturasituacao vl " +
+            " where tl.tipoinstrumentoid   = vl.tipoinstrumentoid " +
+            "   and tl.modeloinstrumentoid = vl.modeloinstrumentoid " +
+            "   and tl.id = vl.templateleituraid " +
+            "   and tl.tipoinstrumentoid = ? " +
+            "   and vl.tipoinstrumentoid = ? " +
+            "   and tl.modeloinstrumentoid = ? " +
+            "   and vl.modeloinstrumentoid = ? " +
+            "   and vl.situacaoLeituraId = ? ";
+        args.push(tipoInstrumentoId);
+        args.push(tipoInstrumentoId);
+        args.push(modeloInstrumentoId);
+        args.push(modeloInstrumentoId);
+        args.push(situacaoLeituraId);
+        return new Promise<any>((resolve, reject) => {
+            this._sql.executeQuery(command, args)
+                .then((data) => resolve(data))
+                .catch((err) => reject(err));
+        });
     }
 }

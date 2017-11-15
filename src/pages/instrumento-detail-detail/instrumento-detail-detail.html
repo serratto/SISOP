@@ -2,9 +2,17 @@
 <ion-header>
   <ion-navbar>
   </ion-navbar>
+  <ion-item no-padding class='head'>
+    <ion-title item-start>Detalhes</ion-title>
+    <ion-buttons item-end>
+      <button ion-button item-end small *ngIf="mustsave" (click)="saveStateChange()" color=danger>
+        Salvar
+      </button>
+    </ion-buttons>
+  </ion-item>
 </ion-header>
 <!-- navbar precisa ficar para deslocar o conteúdo para a posição correta -->
-<ion-content padding>
+<ion-content>
   <ion-grid *ngIf="isDataAvailable">
     <ion-row>
       <ion-col col-4 class='lblDiv'>
@@ -12,6 +20,7 @@
       </ion-col>
       <ion-col class='dataDiv' style='font-size: 120%; font-weight:bold;'>{{instrumento.sigla}}-{{instrumento.numero}}
       </ion-col>
+      <ion-col col-1></ion-col>
     </ion-row>
     <ion-row>
       <ion-col col-4 class='lblDiv'>
@@ -25,6 +34,7 @@
           <ion-toggle style="padding: 5px !important;" [(ngModel)]="ativo" (ionChange)="setStatus()"></ion-toggle>
         </div>
       </ion-col>
+      <ion-col col-1></ion-col>
     </ion-row>
     <ion-row>
       <ion-col col-4 class='lblDiv'>
@@ -32,53 +42,57 @@
       </ion-col>
       <ion-col class='dataDiv'>{{instrumento.siglatipo}}-{{instrumento.nometipo}}
       </ion-col>
+      <ion-col col-1></ion-col>
     </ion-row>
     <ion-row>
       <ion-col col-4 class='lblDiv'>
         <div class='lblDiv'>Modelo:</div>
       </ion-col>
       <ion-col class='dataDiv'>{{instrumento.siglamodelo}}-{{instrumento.nomemodelo}}</ion-col>
+      <ion-col col-1></ion-col>
     </ion-row>
     <ion-row>
       <ion-col col-4 class='lblDiv'>
         <div class='lblDiv'>Cód. Barras:</div>
       </ion-col>
       <ion-col class='dataDiv'>{{instrumento.codigoBarra}}</ion-col>
+      <ion-col col-1></ion-col>
     </ion-row>
     <ion-row>
       <ion-col col-4 class='lblDiv'>
         <div class='lblDiv'>Estaca:</div>
       </ion-col>
       <ion-col class='dataDiv'>{{instrumento.estaca}}</ion-col>
+      <ion-col col-1></ion-col>
     </ion-row>
     <ion-row>
       <ion-col col-4 class='lblDiv'>
         <div class='lblDiv'>Afastamento:</div>
       </ion-col>
       <ion-col class='dataDiv'>{{instrumento.afastamento}}</ion-col>
+      <ion-col col-1></ion-col>
     </ion-row>
     <ion-row>
       <ion-col col-4 class='lblDiv'>
         <div class='lblDiv'>Estrutura:</div>
       </ion-col>
       <ion-col class='dataDiv'>{{instrumento.estruturalocalizacao}}</ion-col>
+      <ion-col col-1></ion-col>
     </ion-row>
     <ion-row>
       <ion-col col-4 class='lblDiv'>
         <div class='lblDiv'>Seção:</div>
       </ion-col>
       <ion-col class='dataDiv'>{{instrumento.secao}}</ion-col>
+      <ion-col col-1></ion-col>
     </ion-row>
     <ion-row>
       <ion-col col-4 class='lblDiv'>
         <div class='lblDiv'>Elemento:</div>
       </ion-col>
       <ion-col class='dataDiv'>{{instrumento.elemento}}</ion-col>
+      <ion-col col-1></ion-col>
     </ion-row>
   </ion-grid>
-  <ion-item *ngIf="mustsave">
-    <button ion-button block  large (click)="saveStateChange()">
-      <ion-icon name='checkmark' item-end></ion-icon>Salvar
-    </button>
-  </ion-item>
+
 </ion-content>

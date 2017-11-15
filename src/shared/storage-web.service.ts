@@ -1,15 +1,16 @@
 import { Injectable } from '@angular/core';
-import { ISQLProvider, Constants } from './shared';
+import { ISQLProvider, SISOPGlobals } from './shared';
 
 const win: any = window;
 
 @Injectable()
 export class StorageWeb implements ISQLProvider {
     private _db: any;
-    private consts: Constants;
+    private _globals: SISOPGlobals;
+
     constructor() {
-        this.consts = new Constants();
-        this._db = win.openDatabase(this.consts.UserDBName, '1.0', 'database', 5 * 1024 * 1024);
+        this._globals = new SISOPGlobals();
+        this._db = win.openDatabase(this._globals.UserDBName, '1.0', 'database', 5 * 1024 * 1024);
     }
 
     executeQuery(query: string, parms?: any[]): Promise<any> {

@@ -1,6 +1,6 @@
 import { Component } from '@angular/core';
 import { IonicPage, NavController, NavParams } from 'ionic-angular';
-import { Constants } from "../../shared/shared";
+import { SISOPGlobals } from "../../shared/shared";
 
 @IonicPage()
 @Component({
@@ -10,10 +10,10 @@ import { Constants } from "../../shared/shared";
 
 export class HomePage {
 
-  consts: Constants;
+  consts: SISOPGlobals;
 
   constructor(public navCtrl: NavController, public navParams: NavParams) {
-    this.consts = new Constants();
+    this.consts = new SISOPGlobals();
   }
 
   ionViewDidLoad() {

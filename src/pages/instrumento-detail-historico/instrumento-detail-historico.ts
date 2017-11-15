@@ -1,9 +1,11 @@
 import { Component } from '@angular/core';
 import {
   IonicPage, NavController, NavParams,
-  LoadingController, AlertController
+  LoadingController, AlertController,
+  ModalController
 } from 'ionic-angular';
-import { GlobalVariables, StorageManager } from "../../shared/shared";
+import { SISOPGlobals, StorageManager } from "../../shared/shared";
+import { InstrumentoDetailHistoricoDetailPage } from "../pages";
 
 @IonicPage()
 @Component({
@@ -11,10 +13,10 @@ import { GlobalVariables, StorageManager } from "../../shared/shared";
   templateUrl: 'instrumento-detail-historico.html',
 })
 export class InstrumentoDetailHistoricoPage {
-
+  _globals: SISOPGlobals;
   instrumento: any;
   leituras: Array<any> = [];
-
+  showLeitura: boolean = true;
   isDataAvailable: boolean = false;
 
 
@@ -22,7 +24,9 @@ export class InstrumentoDetailHistoricoPage {
     private loadingController: LoadingController,
     public stMan: StorageManager,
     private alert: AlertController,
-    public globalVars: GlobalVariables) {
+    private modalCtrl: ModalController) {
+
+    this._globals = new SISOPGlobals();
     this.instrumento = this.navParams.data;
   }
 
@@ -31,17 +35,39 @@ export class InstrumentoDetailHistoricoPage {
       content: 'carregando o instrumento...'
     });
     loader.present().then(() => {
-      this.globalVars.getCurrentUHE()
+      this._globals.getCurrentUHE()
         .then((uhe) => {
           this.stMan.getUltimasLeituras(uhe, this.instrumento.id)
             .then((leit) => {
-              this.leituras = leit.UltimasLeituras;
+
+              for (var index = 0; index < leit.UltimasLeituras.length; index++) {
+                let leitura = leit.UltimasLeituras[index];
+
+                this.showLeitura = (leitura.Valores.length == 1 && this.showLeitura);
+
+                /* formata os valores da lista de valores para apresentação */
+                for (var idx2 = 0; idx2 < leitura.Valores.length; idx2++) {
+                  var val = leitura.Valores[idx2];
+                  if (val.Valor) {
+                    leitura.Valores[idx2].Valor = parseFloat(val.Valor.replace(',', '.'));
+                  }
+                  else {
+                    leitura.Valores[idx2].Valor = 0.00;
+                  }
+                }
+                /* zero a esquerda */
+                if (index + 1 < 10) {
+                  var count = index + 1;
+                  leitura.Idx = '0' + count;
+                } else {
+                  leitura.Idx = index + 1;
+                }
+                this.leituras.push(leitura);
+              }
               this.isDataAvailable = true;
               loader.dismiss();
-              console.log(this.leituras);
             })
             .catch(() => { loader.dismiss(); })
-
         })
         .catch((err) => {
           let alert = this.alert.create({
@@ -54,5 +80,11 @@ export class InstrumentoDetailHistoricoPage {
           loader.dismiss();
         });
     });
+  }
+
+  selectLeitura(leitura) {
+    var parms = { instrumento: this.instrumento, leituraCorrente: leitura, todasLeituras: this.leituras };
+    let modal = this.modalCtrl.create(InstrumentoDetailHistoricoDetailPage, parms);
+    modal.present();
   }
 }

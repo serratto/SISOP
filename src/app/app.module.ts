@@ -8,6 +8,7 @@ import { StatusBar } from '@ionic-native/status-bar';
 import { SplashScreen } from '@ionic-native/splash-screen';
 import { File } from '@ionic-native/file'
 import { BarcodeScanner } from '@ionic-native/barcode-scanner';
+import { Device } from '@ionic-native/device';
 
 
 /* Páginas */
@@ -17,11 +18,12 @@ import {
   SelectInstrumentoBarCodePage, SelectInstrumentoTypingPage,
   SelectInstrumentoSearchPage,
   InstrumentoDetailHomePage, InstrumentoDetailDetailPage,
-  InstrumentoDetailLeituraPage, InstrumentoDetailHistoricoPage
+  InstrumentoDetailLeituraPage, InstrumentoDetailHistoricoPage,
+  InstrumentoDetailHistoricoDetailPage
 } from '../pages/pages';
 
 /* Global Vars module */
-import { GlobalVariables } from '../shared/shared';
+import { SISOPGlobals, SISOPEnvironment } from '../shared/shared';
 /* Storage manager and modules */
 import { StorageManager, StorageSql, StorageWeb } from '../shared/shared';
 
@@ -35,7 +37,8 @@ import { StorageManager, StorageSql, StorageWeb } from '../shared/shared';
     SelectInstrumentoTypingPage,
     SelectInstrumentoSearchPage,
     InstrumentoDetailHomePage, InstrumentoDetailDetailPage,
-    InstrumentoDetailLeituraPage, InstrumentoDetailHistoricoPage
+    InstrumentoDetailLeituraPage, InstrumentoDetailHistoricoPage,
+    InstrumentoDetailHistoricoDetailPage
   ],
   imports: [
     BrowserModule,
@@ -51,18 +54,19 @@ import { StorageManager, StorageSql, StorageWeb } from '../shared/shared';
     SelectInstrumentoTypingPage,
     SelectInstrumentoSearchPage,
     InstrumentoDetailHomePage, InstrumentoDetailDetailPage,
-    InstrumentoDetailLeituraPage, InstrumentoDetailHistoricoPage
+    InstrumentoDetailLeituraPage, InstrumentoDetailHistoricoPage,
+    InstrumentoDetailHistoricoDetailPage
   ],
   providers: [
     StatusBar,
     SplashScreen,
     File,
     BarcodeScanner,
-    GlobalVariables,
+    SISOPGlobals, SISOPEnvironment,
     StorageManager,
     StorageSql,
     StorageWeb,
-    Storage,
+    Storage, Device,
     { provide: ErrorHandler, useClass: IonicErrorHandler }
   ]
 })

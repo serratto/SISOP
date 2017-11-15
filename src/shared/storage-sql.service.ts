@@ -1,27 +1,37 @@
 import { Injectable } from '@angular/core';
-import { ISQLProvider, Constants } from './shared';
+import { ISQLProvider, SISOPGlobals } from './shared';
 import { SQLite, SQLiteObject } from "@ionic-native/sqlite";
 
 @Injectable()
 export class StorageSql implements ISQLProvider {
 
     private _db: any;
-    private consts: Constants;
+    private _globals: SISOPGlobals;
     private sqlite: SQLite;
-
     constructor() {
-        this.consts = new Constants();
-        this.sqlite = new SQLite();
-        this._db = this.sqlite.create({ name: this.consts.UserDBName, location: 'default' })
-            .then((db: SQLiteObject) => { });
+        this._globals = new SISOPGlobals();
+        this.sqlite.create({ name: this._globals.UserDBName, location: 'default' })
+            .then((db: SQLiteObject) => {
+                this._db = db;
+            })
+            .catch((err) => {
+                console.log(err);
+            });
     }
 
     executeQuery(query: string, parms?: any[]): Promise<any> {
         var promise = new Promise((resolve, reject) => {
-            this._db.executeSql(query, parms)
-                .then((data) => resolve(data))
+            this.sqlite.create({ name: this._globals.UserDBName, location: 'default' })
+                .then((db: SQLiteObject) => {
+                    db.executeSql(query, parms)
+                        .then((data) => resolve(data))
+                        .catch(err => {
+                            console.error('Erro no storage-sql executeQuery executeSql', err.tx, err.err);
+                            reject(err);
+                        })
+                })
                 .catch(err => {
-                    console.error('Erro no storage-sql runCommand', err.tx, err.err);
+                    console.error('Erro no storage-sql executeQuery create', err.tx, err.err);
                     reject(err);
                 });
         });
@@ -30,10 +40,17 @@ export class StorageSql implements ISQLProvider {
 
     executeNonQuery(query: string): Promise<any> {
         var promise = new Promise((resolve, reject) => {
-            this._db.executeSql(query)
-                .then((data) => resolve(data))
-                .catch((err) => {
-                    console.error('Erro no storage-web executeNonQuery', err.tx, err.err);
+            this.sqlite.create({ name: this._globals.UserDBName, location: 'default' })
+                .then((db: SQLiteObject) => {
+                    this._db.executeSql(query)
+                        .then((data) => resolve(data))
+                        .catch((err) => {
+                            console.error('Erro no storage-sql executeNonQuery executeSql', err.tx, err.err);
+                            reject(err);
+                        })
+                })
+                .catch(err => {
+                    console.error('Erro no storage-sql executeNonQuery create', err.tx, err.err);
                     reject(err);
                 });
         });

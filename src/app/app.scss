@@ -21,3 +21,42 @@
     height: 80px !important;
     text-align: center;
 }
+.listHeight{
+    height: 50px !important;
+}
+.head{
+    height: 50px !important;
+    background-color: map-get($colors, primary); 
+}
+.head>.item-inner{
+    border-bottom: none !important;
+}
+.head>ion-title>div.toolbar-title, .head>div.item-inner>ion-title>div.toolbar-title{
+    color: whitesmoke !important;
+    font-size: 16px !important;
+    font-weight: 600 !important;
+    text-align: left;
+}
+
+.subHead{
+    background-color: map-get($colors, secondary); 
+}
+.subHead>ion-title>div.toolbar-title, .subHead>div.item-inner>ion-title>div.toolbar-title{
+    color: map-get($colors, dark) !important;
+    font-size: 14px !important;
+    font-weight: 500 !important;
+}
+
+
+.detail {
+    height: 50px !important;
+}
+.detail>.item-inner{
+    border-bottom: none !important;
+}
+.detail>ion-title>div.toolbar-title, .detail>div.item-inner>ion-title>div.toolbar-title{
+    color: rgb(0, 0, 0)!important;
+    font-size: 16px !important;
+    font-weight: 400 !important;
+    text-align: left;
+}

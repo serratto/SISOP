@@ -2,14 +2,26 @@
 <ion-header>
   <ion-navbar>
   </ion-navbar>
+  <ion-item no-padding class='head'>
+    <ion-title item-start>Últimas Leituras</ion-title>
+  </ion-item>
 </ion-header>
 <!-- navbar precisa ficar para deslocar o conteúdo para a posição correta -->
-<ion-content padding>
-  HISTORICO
+<ion-content>
+
   <ion-list *ngIf="isDataAvailable">
-    <ion-item *ngFor="let leitura of leituras">
+    <ion-item *ngFor="let leitura of leituras" class='listHeight'>
       <ion-row>
-        <ion-col>{{leitura.DataLeitura}}</ion-col>
+        <ion-col col-2 class='pdTop'>
+          <ion-badge>{{leitura.Idx}}</ion-badge>
+        </ion-col>
+        <ion-col class='pdTop'>{{leitura.DataLeitura}}</ion-col>
+        <ion-col col-2 *ngIf="showLeitura" class="rB pdTop">{{leitura.Valores[0].Valor | number:'1.2-2'}}</ion-col>
+        <ion-col col-2>
+          <button ion-button icon-only outline light small (click)='selectLeitura(leitura)'>
+            <ion-icon name='arrow-dropright'></ion-icon>
+          </button>
+        </ion-col>
       </ion-row>
     </ion-item>
   </ion-list>

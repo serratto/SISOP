@@ -86,6 +86,7 @@
     <allow-navigation href="http://192.168.15.27:8100" />
     <allow-navigation href="http://192.168.15.30:8100" />
     <allow-navigation href="http://192.168.15.39:8100" />
+    <allow-navigation href="http://192.168.15.14:8100" />
     <engine name="android" spec="~6.3.0" />
     <engine name="browser" spec="5.0.1" />
     <plugin name="ionic-plugin-keyboard" spec="^2.2.1" />
@@ -105,5 +106,4 @@
     <plugin name="phonegap-plugin-barcodescanner" spec="^7.0.0" />
     <plugin name="cordova-sqlite-storage" spec="^2.1.0" />
     <plugin name="cordova-plugin-advanced-http" spec="^1.8.1" />
-    <allow-navigation href="http://192.168.15.14:8100" />
 </widget>

@@ -3,7 +3,7 @@ import {
   IonicPage, NavController, NavParams,
   LoadingController, AlertController
 } from 'ionic-angular';
-import { GlobalVariables, StorageManager } from "../../shared/shared";
+import { StorageManager } from "../../shared/shared";
 
 @IonicPage()
 @Component({
@@ -25,8 +25,7 @@ export class InstrumentoDetailDetailPage {
   constructor(public navCtrl: NavController, public navParams: NavParams,
     private loadingController: LoadingController,
     public stMan: StorageManager,
-    private alert: AlertController,
-    public globalVars: GlobalVariables) {
+    private alert: AlertController) {
     this.parmInstrumento = this.navParams.data;
   }
 
@@ -105,9 +104,9 @@ export class InstrumentoDetailDetailPage {
   ionViewWillUnload() {
     if (this.mustsave) {
       let alert = this.alert.create({
-        title: 'Mudança de estado pendente.',
+        title: 'Atenção!!!',
         cssClass: 'alert-danger',
-        message: 'Deseja sair sem salvar?',
+        message: 'A mudança de estado não foi salva, deseja sair sem salvar?',
         buttons: [{
           text: 'Salvar',
           handler: () => {

@@ -2,9 +2,8 @@
 export * from './UHEFile.class';
 
 /* Global Variables */
-export * from './global-vars.service';
-
-export * from './constants';
+export * from './SISOPGlobals';
+export * from './SISOPEnvironment';
 
 /* SQL Storage */
 export * from './storage-manager.service';

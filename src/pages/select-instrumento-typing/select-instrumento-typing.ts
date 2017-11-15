@@ -3,7 +3,7 @@ import {
   IonicPage, NavController, NavParams, App,
   LoadingController, AlertController
 } from 'ionic-angular';
-import { GlobalVariables, StorageManager } from "../../shared/shared";
+import { SISOPGlobals, StorageManager } from "../../shared/shared";
 import { SelectInstrumentoSearchPage, InstrumentoDetailHomePage } from "../pages";
 import _ from 'lodash';
 
@@ -13,26 +13,26 @@ import _ from 'lodash';
   templateUrl: 'select-instrumento-typing.html'
 })
 export class SelectInstrumentoTypingPage {
+  tiposPorUHE: Array<any>;
+  public tipoSelected = undefined;
+  private usinaId;
 
   constructor(public navCtrl: NavController,
     public navParams: NavParams,
     private loadingController: LoadingController,
     public stMan: StorageManager,
+    public _globals: SISOPGlobals,
     private alert: AlertController,
-    public app: App,
-    public globalVars: GlobalVariables) {
+    public app: App) {
   }
 
-  tiposPorUHE: Array<any>;
-  public tipoSelected = undefined;
-  private usinaId;
 
   ionViewDidLoad() {
     let loader = this.loadingController.create({
       content: 'carregando os tipos de instrumento...'
     });
     this.tiposPorUHE = [];
-    this.globalVars.getCurrentUHE()
+    this._globals.getCurrentUHE()
       .then((uhe) => {
         this.usinaId = uhe.usinaId;
         this.stMan.getTiposByUHE(uhe.usinaId)
@@ -56,10 +56,10 @@ export class SelectInstrumentoTypingPage {
 
   ionViewWillEnter() {
     /* verifica se o instrumento selecionado está preenchido (está voltando da seleção) */
-    if (this.globalVars.instrumentoSelecionado) {
+    if (this._globals.instrumentoSelecionado) {
       /* limpa a seleção */
-      var parmInstrumento = this.globalVars.instrumentoSelecionado;
-      this.globalVars.instrumentoSelecionado = null;
+      var parmInstrumento = this._globals.instrumentoSelecionado;
+      this._globals.instrumentoSelecionado = null;
 
       /* Chama a tela de detalhes do instrumento */
       this.app.getRootNav().push(InstrumentoDetailHomePage, parmInstrumento);
@@ -72,7 +72,7 @@ export class SelectInstrumentoTypingPage {
     this.navCtrl.push(SelectInstrumentoSearchPage, parms);
   }
 
-  onChange(){
+  onChange() {
     var tipo = _.find(this.tiposPorUHE, { 'id': this.tipoSelected });
     var parms = { tipoSelected: tipo, usina: this.usinaId };
     this.navCtrl.push(SelectInstrumentoSearchPage, parms);

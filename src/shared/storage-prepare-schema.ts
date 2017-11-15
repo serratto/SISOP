@@ -35,8 +35,6 @@ export class StoragePrepareSchema {
                 this.createVariavelLeituraSituacao(),
                 this.createInstrumento(),
                 this.createLabelLeitura(),
-                this.createUltimas12Leituras(),
-                this.createLeituraValor(),
                 this.createStateChange()
                 ])
                 .then(() => { resolve(); })
@@ -110,6 +108,7 @@ export class StoragePrepareSchema {
             let command = 'CREATE TABLE IF NOT EXISTS TipoInstrumentoPorInstalacao ' +
                 '(usinaId bigint ' +
                 ',tipoInstrumentoId bigint' +
+                ', PRIMARY KEY (usinaId, tipoInstrumentoId) ' +
                 ')';
             this._sql.executeNonQuery(command)
                 .then(() => { resolve(); })
@@ -199,6 +198,7 @@ export class StoragePrepareSchema {
             let command = 'CREATE TABLE IF NOT EXISTS TemplateLeitura ' +
                 '(id bigint primary key ' +
                 ',tipoInstrumentoId bigint' +
+                ',modeloInstrumentoId bigint' +
                 ',sequencia int' +
                 ',sigla varchar(20)' +
                 ',nome varchar(255)' +
@@ -216,9 +216,11 @@ export class StoragePrepareSchema {
             let command = 'CREATE TABLE IF NOT EXISTS VariavelLeituraSituacao ' +
                 '(tipoInstrumentoId bigint' +
                 ',situacaoLeituraId bigint' +
-                ',modeloInstrumentId bigint' +
+                ',modeloInstrumentoId bigint' +
                 ',templateLeituraId bigint' +
                 ',unidadeMedida string' +
+                ', PRIMARY KEY (tipoInstrumentoId, situacaoLeituraId, modeloInstrumentoId ' +
+                ', templateLeituraId, unidadeMedida)' +
                 ')';
             this._sql.executeNonQuery(command)
                 .then(() => { resolve(); })
@@ -258,6 +260,7 @@ export class StoragePrepareSchema {
                 '(instrumentoId bigint ' +
                 ',seq int' +
                 ',valor string' +
+                ', PRIMARY KEY (instrumentoId, seq, valor) ' +
                 ')';
             this._sql.executeNonQuery(command)
                 .then(() => { resolve(); })
@@ -267,16 +270,11 @@ export class StoragePrepareSchema {
                 })
         });
     }
-    private createUltimas12Leituras(): Promise<any> {
+      private createStateChange(): Promise<any> {
         return new Promise((resolve, reject) => {
-            let command = 'CREATE TABLE IF NOT EXISTS Ultimas12Leituras ' +
-                '(leituraId bigint ' +
-                ',instrumentoId bigint' +
-                ',dataLeitura string' +
-                ',nivelDagua string' +
-                ',situacaoLeituraId int' +
-                ',observacao string' +
-                ')';
+            let command = 'CREATE TABLE IF NOT EXISTS MudancaEstado ' +
+                '(instrumentoId bigint primary key, ' +
+                'estadoId bigint)';
             this._sql.executeNonQuery(command)
                 .then(() => { resolve(); })
                 .catch((err) => {
@@ -284,35 +282,6 @@ export class StoragePrepareSchema {
                     return;
                 })
         });
-    }
-    private createLeituraValor(): Promise<any> {
-        return new Promise((resolve, reject) => {
-            let command = 'CREATE TABLE IF NOT EXISTS LeituraValor ' +
-                '(leituraId bigint ' +
-                ',templateLeituraId bigint' +
-                ',sequencial int' +
-                ',valor decimal(20,7)' +
-                ')';
-            this._sql.executeNonQuery(command)
-                .then(() => { resolve(); })
-                .catch((err) => {
-                    reject(err);
-                    return;
-                })
-        });
-    }
-    private createStateChange():Promise<any>{
-            return new Promise((resolve, reject) => {
-                let command = 'CREATE TABLE IF NOT EXISTS MudancaEstado ' +
-                    '(instrumentoId bigint primary key, ' +
-                    'estadoId bigint)';
-                this._sql.executeNonQuery(command)
-                    .then(() => { resolve(); })
-                    .catch((err) => {
-                        reject(err);
-                        return;
-                    })
-            });
-    
+
     }
 }

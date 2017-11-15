@@ -6,5 +6,6 @@ export * from './select-instrumento-typing/select-instrumento-typing';
 export * from './select-instrumento-search/select-instrumento-search';
 export * from './instrumento-detail-home/instrumento-detail-home';
 export * from './instrumento-detail-historico/instrumento-detail-historico';
+export * from './instrumento-detail-historico-detail/instrumento-detail-historico-detail';
 export * from './instrumento-detail-detail/instrumento-detail-detail';
 export * from './instrumento-detail-leitura/instrumento-detail-leitura';
