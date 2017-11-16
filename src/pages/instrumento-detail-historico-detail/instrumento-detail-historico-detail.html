@@ -56,13 +56,14 @@
   </ion-grid>
   <ion-grid *ngIf="multiponto">
       <ion-row *ngFor="let row of rows">
-        <ion-col *ngFor="let col of columns" col-4 [ngClass]='getClass(col)'>{{getVal(row,col)}}</ion-col>
+        <ion-col *ngFor="let col of columns" col-4 [ngClass]='getClass(col)'>{{getVal(row,col)  | number:'1.2-2'}}</ion-col>
       </ion-row>
     </ion-grid>
   <!-- SinglePoint -->
   <ion-grid *ngIf="!multiponto">
     <ion-row *ngFor="let col of columns">
       <ion-col class='gridTitle'>{{col.label}}</ion-col>
+      <ion-col class='gridData'>{{col.valor  | number:'1.2-2'}}</ion-col>
     </ion-row>
   </ion-grid>
 </ion-content>

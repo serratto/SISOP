@@ -76,24 +76,29 @@ export class InstrumentoDetailHistoricoDetailPage {
     });
   }
 
-  getVal(row, col) {
+  getVal(row, col): number {
     if (this.instrumento.multiponto) {
       if (col.seq == 0) {
-        return row.Valor;
+        if (row.Label) {
+          return row.Valor;
+        }
+        else {
+          return parseFloat(row.Valor.toString().replace(",", "."));
+        }
       }
 
       var v = _.find(this.leitura.Valores, function (val) {
         return val.TemplateLeituraId == col.templateleituraid && val.Sequencial == row.seq;
       });
-      return v.Valor;
 
+      return v.Valor;
+      // return parseFloat(v.Valor.replace(",", "."));
     }
-    // console.log(row, col)
-    return '...';
+
+    return 0;
   }
 
-  getClass(col)
-  {
+  getClass(col) {
     if (col.seq == 0) {
       return 'gridTitle';
     }
@@ -121,11 +126,17 @@ export class InstrumentoDetailHistoricoDetailPage {
     for (var idx2 = 0; idx2 < this.templatesLeitura.length; idx2++) {
       var element = this.templatesLeitura[idx2];
       if (this.instrumento.multiponto) {
-        this.columns.push({
-          label: element.sigla,
-          templateleituraid: element.templateLeituraId,
-          seq: element.sequencia
-        });
+        /* Verifica se esse label pertence à este modelo, se sim, carrega */
+        var findTemp = _.find(this.modeloInstrumentoTemplateLeitura,
+          function (mitl) { return mitl.templateLeituraId == element.templateLeituraId });
+        if (findTemp) {
+
+          this.columns.push({
+            label: element.sigla,
+            templateleituraid: element.templateLeituraId,
+            seq: element.sequencia
+          });
+        }
       }
       else {
         this.columns.push({
@@ -138,23 +149,53 @@ export class InstrumentoDetailHistoricoDetailPage {
 
     /* injeta linhas (multiponto) */
     if (this.instrumento.multiponto) {
+      /* verifica se existe mais de 1 label para a mesma sequencia, 
+      se sim, ignora o label com valor vazio (que é só a sequencia) */
+      var qtLabels = _.filter(this.labelsLeitura, function (ll) { return ll.Seq == 0 });
+      
       for (var idx3 = 0; idx3 < this.labelsLeitura.length; idx3++) {
         var label = this.labelsLeitura[idx3];
-        this.rows.push({ seq: label.Seq, Valor: label.Valor });
+        if (label.Valor.length == 0) {
+          if (qtLabels.length == 1) {
+            this.rows.push({ seq: label.Seq, Valor: parseInt(label.Seq) + 1, Label: true });
+          }
+        }
+        else {
+          this.rows.push({ seq: label.Seq, Valor: label.Valor, Label: false });
+        }
       }
+    }
+    else {
+      var cols = [];
+      for (let idx4 = 0; idx4 < this.columns.length; idx4++) {
+        const element = this.columns[idx4];
+        var val = _.find(this.leitura.Valores,
+          function (v) { return v.TemplateLeituraId == element.templateleituraid });
+        if (val) {
+          cols.push({
+            label: element.label,
+            templateleituraid: element.templateLeituraId,
+            seq: element.seq,
+            valor: val.Valor
+          });
+        }
+      }
+      this.columns = cols;
     }
 
 
     this.isDataAvailable = true;
-
-    console.log('instrumento', this.instrumento);
-    console.log('leitura', this.leitura);
-    console.log('todasLeituras', this.todasLeituras);
-    console.log('situacaoLeitura', this.situacaoLeitura);
-    console.log('situacoesLeitura', this.situacoesLeitura);
-    console.log('templatesLeitura', this.templatesLeitura);
-    console.log('labelsLeitura', this.labelsLeitura);
-    console.log('modeloInstrumentoTemplateLeitura', this.modeloInstrumentoTemplateLeitura);
+    // console.log('UHE', this.currentUHE);
+    // console.log('instrumento', this.instrumento);
+    // console.log('leitura', this.leitura);
+    // console.log('todasLeituras', this.todasLeituras);
+    // console.log('situacaoLeitura', this.situacaoLeitura);
+    // console.log('situacoesLeitura', this.situacoesLeitura);
+    // console.log('templatesLeitura', this.templatesLeitura);
+    // console.log('labelsLeitura', this.labelsLeitura);
+    // console.log('modeloInstrumentoTemplateLeitura', this.modeloInstrumentoTemplateLeitura);
+    // console.log('rows', this.rows);
+    // console.log('columns', this.columns);
   }
 
   prevDisable() {
@@ -199,6 +240,7 @@ export class InstrumentoDetailHistoricoDetailPage {
 
   /* Processos de Recuperação */
   getSituacaoLeitura(): Promise<any> {
+    this.situacoesLeitura = [];
     return new Promise((resolve, reject) => {
       this.stMan.getSituacaoLeituraByTipoInstrumento(this.instrumento.tipoInstrumentoId)
         .then((sitLeit) => {
@@ -213,6 +255,7 @@ export class InstrumentoDetailHistoricoDetailPage {
   }
 
   getTemplateLeitura(): Promise<any> {
+    this.templatesLeitura = [];
     return new Promise((resolve, reject) => {
       this.stMan.getTemplateLeituraByTipoInstrumento(this.instrumento.tipoInstrumentoId)
         .then((templLeit) => {
@@ -227,6 +270,7 @@ export class InstrumentoDetailHistoricoDetailPage {
   }
 
   getModeloTemplateLeitura(): Promise<any> {
+    this.modeloInstrumentoTemplateLeitura = [];
     return new Promise((resolve, reject) => {
       this.stMan.getModeloTemplateLeituraByModelo(this.instrumento.modeloid)
         .then((modTempl) => {
