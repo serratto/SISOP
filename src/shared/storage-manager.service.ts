@@ -117,7 +117,8 @@ export class StorageManager {
             'LabelLeitura',
             'Ultimas12Leituras',
             'LeituraValor',
-            'MudancaEstado'
+            'MudancaEstado',
+            'ModeloInstrumentoTemplateLeitura'
         ];
         for (var index = 0; index < tabs.length; index++) {
             let command = 'delete from ' + tabs[index];
@@ -313,10 +314,10 @@ export class StorageManager {
         return promise;
     }
 
-    public getSituacaoLeitura(situacaoLeituraId: number): Promise<any> {
+    public getSituacaoLeituraByTipoInstrumento(tipoinstrumentoid: number): Promise<any> {
         var args = [];
-        let command = 'select id, sigla, nome from SituacaoLeitura where id = ?';
-        args.push(situacaoLeituraId);
+        let command = 'select id, sigla, nome from SituacaoLeitura where tipoinstrumentoid = ?';
+        args.push(tipoinstrumentoid);
         return new Promise<any>((resolve, reject) => {
             this._sql.executeQuery(command, args)
                 .then((data) => resolve(data))
@@ -324,26 +325,30 @@ export class StorageManager {
         });
     }
 
-    public getTemplateLeituraByTipoInstrumento(tipoInstrumentoId: number,
-        situacaoLeituraId: number, modeloInstrumentoId: number): Promise<any> {
+    public getTemplateLeituraByTipoInstrumento(tipoInstrumentoId: number): Promise<any> {
         var args = [];
-        let command = " select tl.id as 'templateleituraid', tl.tipoinstrumentoid as 'tipoinstrumentoid',  " +
-            " tl.sequencia as 'seqleitura', tl.sigla as 'sigla', tl.nome as 'nome'  " +
-            " from TemplateLeitura tl, " +
-            "      variavelleiturasituacao vl " +
-            " where tl.tipoinstrumentoid   = vl.tipoinstrumentoid " +
-            "   and tl.modeloinstrumentoid = vl.modeloinstrumentoid " +
-            "   and tl.id = vl.templateleituraid " +
-            "   and tl.tipoinstrumentoid = ? " +
-            "   and vl.tipoinstrumentoid = ? " +
-            "   and tl.modeloinstrumentoid = ? " +
-            "   and vl.modeloinstrumentoid = ? " +
-            "   and vl.situacaoLeituraId = ? ";
+        let command = " select id as 'templateLeituraId', " +
+            " tipoinstrumentoid, " +
+            " sequencia, " +
+            " sigla, " +
+            " nome " +
+            " from templateLeitura " +
+            " where tipoinstrumentoid = ? ";
         args.push(tipoInstrumentoId);
-        args.push(tipoInstrumentoId);
+        return new Promise<any>((resolve, reject) => {
+            this._sql.executeQuery(command, args)
+                .then((data) => resolve(data))
+                .catch((err) => reject(err));
+        });
+    }
+
+    public getModeloTemplateLeituraByModelo(modeloInstrumentoId: number): Promise<any> {
+        var args = [];
+        let command = " select modeloInstrumentoId, templateLeituraId " +
+            " from ModeloInstrumentoTemplateLeitura " +
+            " where modeloInstrumentoId = ? ";
         args.push(modeloInstrumentoId);
-        args.push(modeloInstrumentoId);
-        args.push(situacaoLeituraId);
+
         return new Promise<any>((resolve, reject) => {
             this._sql.executeQuery(command, args)
                 .then((data) => resolve(data))

@@ -26,6 +26,7 @@ export class StorageLoadData {
                     this.carregaFileManager(jsonData),
                     this.carregaEstados(jsonData),
                     this.carregaTemplateLeitura(jsonData),
+                    this.carregaModeloInstrumentoTemplateLeitura(jsonData),
                     this.carregaSituacaoLeitura(jsonData),
                     this.carregaVariavelLeituraSituacao(jsonData),
                     this.carregaTipoInstrumento(jsonData),
@@ -78,16 +79,35 @@ export class StorageLoadData {
     private carregaTemplateLeitura(jsonData: object): Promise<any> {
         var args = [];
         let command = 'insert or replace into TemplateLeitura ' +
-            '(id, tipoInstrumentoId, modeloInstrumentoId, sequencia, sigla, nome)'
+            '(id, tipoInstrumentoId, sequencia, sigla, nome)'
             + ' values ';
         _.forEach(jsonData['LeituraStructure']['TemplateLeitura'], function (item) {
             args.push(item.Id)
             args.push(item.TipoInstrumentoId);
-            args.push(item.ModeloInstrumentoId);
             args.push(item.Sequencia);
             args.push(item.Sigla);
             args.push(item.Nome);
-            command += '(?, ?, ?, ?, ?, ?),';
+            command += '(?, ?, ?, ?, ?),';
+        });
+        command = command.substring(0, command.length - 1);
+        return new Promise<any>((resolve, reject) => {
+            this._sql.executeQuery(command, args)
+                .then(() => { resolve(); })
+                .catch((err) => {
+                    reject(err);
+                    return;
+                });
+        });
+    }
+    private carregaModeloInstrumentoTemplateLeitura(jsonData: object): Promise<any> {
+        var args = [];
+        let command = 'insert or replace into ModeloInstrumentoTemplateLeitura ' +
+            '(modeloInstrumentoId, templateLeituraId)'
+            + ' values ';
+        _.forEach(jsonData['LeituraStructure']['ModeloInstrumentoTemplateLeitura'], function (item) {
+            args.push(item.ModeloInstrumentoId)
+            args.push(item.TemplateLeituraId);
+            command += '(?, ?),';
         });
         command = command.substring(0, command.length - 1);
         return new Promise<any>((resolve, reject) => {

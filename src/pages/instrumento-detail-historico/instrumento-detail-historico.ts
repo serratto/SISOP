@@ -15,7 +15,9 @@ import { InstrumentoDetailHistoricoDetailPage } from "../pages";
 export class InstrumentoDetailHistoricoPage {
   _globals: SISOPGlobals;
   instrumento: any;
+  currentUHE: any;
   leituras: Array<any> = [];
+  labelsLeitura: Array<any> = [];
   showLeitura: boolean = true;
   isDataAvailable: boolean = false;
 
@@ -37,9 +39,9 @@ export class InstrumentoDetailHistoricoPage {
     loader.present().then(() => {
       this._globals.getCurrentUHE()
         .then((uhe) => {
+          this.currentUHE = uhe;
           this.stMan.getUltimasLeituras(uhe, this.instrumento.id)
             .then((leit) => {
-
               for (var index = 0; index < leit.UltimasLeituras.length; index++) {
                 let leitura = leit.UltimasLeituras[index];
 
@@ -64,6 +66,7 @@ export class InstrumentoDetailHistoricoPage {
                 }
                 this.leituras.push(leitura);
               }
+              this.labelsLeitura = leit.LabelLeitura;
               this.isDataAvailable = true;
               loader.dismiss();
             })
@@ -83,7 +86,13 @@ export class InstrumentoDetailHistoricoPage {
   }
 
   selectLeitura(leitura) {
-    var parms = { instrumento: this.instrumento, leituraCorrente: leitura, todasLeituras: this.leituras };
+    var parms = {
+      instrumento: this.instrumento,
+      leituraCorrente: leitura,
+      todasLeituras: this.leituras,
+      labelsLeitura: this.labelsLeitura,
+      currentUHE: this.currentUHE
+    };
     let modal = this.modalCtrl.create(InstrumentoDetailHistoricoDetailPage, parms);
     modal.present();
   }

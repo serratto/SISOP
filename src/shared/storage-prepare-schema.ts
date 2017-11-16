@@ -32,6 +32,7 @@ export class StoragePrepareSchema {
                 this.createElemento(),
                 this.createSituacaoLeitura(),
                 this.createTemplateLeitura(),
+                this.createModeloInstrumentoTemplateLeitura(),
                 this.createVariavelLeituraSituacao(),
                 this.createInstrumento(),
                 this.createLabelLeitura(),
@@ -198,10 +199,24 @@ export class StoragePrepareSchema {
             let command = 'CREATE TABLE IF NOT EXISTS TemplateLeitura ' +
                 '(id bigint primary key ' +
                 ',tipoInstrumentoId bigint' +
-                ',modeloInstrumentoId bigint' +
                 ',sequencia int' +
                 ',sigla varchar(20)' +
                 ',nome varchar(255)' +
+                ')';
+            this._sql.executeNonQuery(command)
+                .then(() => { resolve(); })
+                .catch((err) => {
+                    reject(err);
+                    return;
+                })
+        });
+    } 
+    private createModeloInstrumentoTemplateLeitura(): Promise<any> {
+        return new Promise((resolve, reject) => {
+            let command = 'CREATE TABLE IF NOT EXISTS ModeloInstrumentoTemplateLeitura ' +
+                '(modeloInstrumentoId bigint' +
+                ', templateLeituraId bigint' +
+                ', PRIMARY KEY (modeloInstrumentoId, templateLeituraId)' +
                 ')';
             this._sql.executeNonQuery(command)
                 .then(() => { resolve(); })
