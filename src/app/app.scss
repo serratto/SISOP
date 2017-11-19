@@ -32,12 +32,11 @@
     border-bottom: none !important;
 }
 .head>ion-title>div.toolbar-title, .head>div.item-inner>ion-title>div.toolbar-title{
-    color: whitesmoke !important;
+    color: map-get($colors, light) !important;
     font-size: 16px !important;
     font-weight: 600 !important;
     text-align: left;
 }
-
 .subHead{
     background-color: map-get($colors, secondary); 
 }
@@ -46,8 +45,6 @@
     font-size: 14px !important;
     font-weight: 500 !important;
 }
-
-
 .detail {
     height: 50px !important;
 }
@@ -55,12 +52,11 @@
     border-bottom: none !important;
 }
 .detail>ion-title>div.toolbar-title, .detail>div.item-inner>ion-title>div.toolbar-title{
-    color: rgb(0, 0, 0)!important;
+    color: map-get($colors, dark)!important;
     font-size: 16px !important;
     font-weight: 400 !important;
     text-align: left;
 }
-
 .gridTitle{
     color: map-get($colors, dark) !important;
     font-size: 14px !important;
@@ -72,3 +68,48 @@
     border: 1px solid map-get($colors, dark) !important;
     text-align: right !important;
 }
+
+/* Grid Erro */
+
+table.errTable{
+    width:100%;
+}
+
+table.errTable>tbody>tr>th{
+    padding: 10px;
+    font-size: 18px;
+    font-weight: 700 !important; 
+    background-color:  map-get($colors, secondary);
+    color: map-get($colors, dark);
+    padding: 20px;
+}    
+
+table.errTable>tbody>tr{
+}
+    
+table.errTable>tbody>tr>td>p.labelErr{
+    font-size: 14px !important;
+    font-weight: 700 !important; 
+    width: 100%;  
+    border-bottom: 1px solid map-get($colors, dark) !important;
+    border: 1px solid map-get($colors, dark) !important;
+    padding: 5px 0px 5px 5px; 
+}
+
+table.errTable>tbody>tr>td>p.msgErr{
+    font-size: 14px !important;
+    font-weight: 700 !important; 
+    padding-left: 10px;
+    width: 100%;  
+    border-bottom: 1px solid map-get($colors, dark) !important;
+    border: 1px solid map-get($colors, dark) !important;
+}
+
+table.errTable>tbody>tr>td>p.alert{
+    background-color:  map-get($colors, alert);
+}
+
+table.errTable>tbody>tr>td>p.danger{
+    background-color:  map-get($colors, danger);
+}
+    

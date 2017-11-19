@@ -10,6 +10,8 @@ import { File } from '@ionic-native/file'
 import { BarcodeScanner } from '@ionic-native/barcode-scanner';
 import { Device } from '@ionic-native/device';
 
+/* Módulo de máscara */
+import { CurrencyMaskModule } from "ng2-currency-mask";
 
 /* Páginas */
 import {
@@ -18,8 +20,11 @@ import {
   SelectInstrumentoBarCodePage, SelectInstrumentoTypingPage,
   SelectInstrumentoSearchPage,
   InstrumentoDetailHomePage, InstrumentoDetailDetailPage,
-  InstrumentoDetailLeituraPage, InstrumentoDetailHistoricoPage,
-  InstrumentoDetailHistoricoDetailPage
+  InstrumentoDetailHistoricoPage,
+  InstrumentoDetailHistoricoDetailPage,
+  InstrumentoDetailLeituraLeituraPage,
+  InstrumentoDetailLeituraErroPage,
+  InstrumentoDetailLeituraCampanhaPage
 } from '../pages/pages';
 
 /* Global Vars module */
@@ -37,11 +42,15 @@ import { StorageManager, StorageSql, StorageWeb } from '../shared/shared';
     SelectInstrumentoTypingPage,
     SelectInstrumentoSearchPage,
     InstrumentoDetailHomePage, InstrumentoDetailDetailPage,
-    InstrumentoDetailLeituraPage, InstrumentoDetailHistoricoPage,
-    InstrumentoDetailHistoricoDetailPage
+    InstrumentoDetailHistoricoPage,
+    InstrumentoDetailHistoricoDetailPage,
+    InstrumentoDetailLeituraLeituraPage,
+    InstrumentoDetailLeituraErroPage,
+    InstrumentoDetailLeituraCampanhaPage
   ],
   imports: [
     BrowserModule,
+    CurrencyMaskModule,
     IonicModule.forRoot(MyApp),
   ],
   bootstrap: [IonicApp],
@@ -54,8 +63,11 @@ import { StorageManager, StorageSql, StorageWeb } from '../shared/shared';
     SelectInstrumentoTypingPage,
     SelectInstrumentoSearchPage,
     InstrumentoDetailHomePage, InstrumentoDetailDetailPage,
-    InstrumentoDetailLeituraPage, InstrumentoDetailHistoricoPage,
-    InstrumentoDetailHistoricoDetailPage
+    InstrumentoDetailHistoricoPage,
+    InstrumentoDetailHistoricoDetailPage,
+    InstrumentoDetailLeituraLeituraPage,
+    InstrumentoDetailLeituraErroPage,
+    InstrumentoDetailLeituraCampanhaPage
   ],
   providers: [
     StatusBar,

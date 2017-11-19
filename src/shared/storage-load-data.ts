@@ -167,14 +167,15 @@ export class StorageLoadData {
     private carregaTipoInstrumento(jsonData: object): Promise<any> {
         var args = [];
         let command = 'insert or replace into TipoInstrumento ' +
-            '(id, sigla, nome, multiponto)'
+            '(id, sigla, nome, multiponto, niveldagua)'
             + ' values ';
         _.forEach(jsonData['TiposInstrumento'], function (item) {
             args.push(item.Id)
             args.push(item.Sigla);
             args.push(item.Nome);
             args.push(item.Multiponto);
-            command += '(?, ?, ?, ?),';
+            args.push(item.NivelDagua);
+            command += '(?, ?, ?, ?, ?),';
         });
         command = command.substring(0, command.length - 1);
         return new Promise<any>((resolve, reject) => {

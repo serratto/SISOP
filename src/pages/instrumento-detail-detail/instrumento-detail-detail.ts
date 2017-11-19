@@ -26,7 +26,7 @@ export class InstrumentoDetailDetailPage {
     private loadingController: LoadingController,
     public stMan: StorageManager,
     private alert: AlertController) {
-    this.parmInstrumento = this.navParams.data;
+    this.parmInstrumento = this.navParams.data.instrumento;
   }
 
   ionViewDidLoad() {

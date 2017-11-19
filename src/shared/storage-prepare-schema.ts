@@ -95,6 +95,7 @@ export class StoragePrepareSchema {
                 ',sigla varchar(20)' +
                 ',nome varchar(255)' +
                 ',multiponto int' +
+                ',nivelDagua int' +
                 ')';
             this._sql.executeNonQuery(command)
                 .then(() => { resolve(); })

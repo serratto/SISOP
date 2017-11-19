@@ -3,11 +3,11 @@
     <button ion-button menuToggle>
       <ion-icon name="menu"></ion-icon>
     </button>
-    <ion-title>{{selectedUhe.sigla}}: {{instrumentoParm.modelo}}-{{instrumentoParm.numero}}</ion-title>
+    <ion-title >{{selectedUhe.sigla}}: {{instrumento.modelo}}-{{instrumento.numero}}</ion-title>
   </ion-navbar>
 </ion-header>
 <ion-tabs>
-  <ion-tab tabTitle="Últimas Leituras" [root]='historicoTab' [rootParams]="instrumentoParm" tabIcon="funnel"></ion-tab>
-  <ion-tab tabTitle="Detalhe" [root]='detalheTab' [rootParams]="instrumentoParm" tabIcon="clipboard"></ion-tab>
-  <ion-tab tabTitle="Leitura" [root]='leituraTab' [rootParams]="instrumentoParm" tabIcon="create"></ion-tab>
+  <ion-tab tabTitle="Leitura" [root]='leituraTab' [rootParams]="bubbleParms" tabIcon="speedometer"></ion-tab>
+  <ion-tab tabTitle="Últimas Leituras" [root]='historicoTab' [rootParams]="bubbleParms" tabIcon="funnel"></ion-tab>
+  <ion-tab tabTitle="Detalhe" [root]='detalheTab' [rootParams]="bubbleParms" tabIcon="clipboard"></ion-tab>
 </ion-tabs>

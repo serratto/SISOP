@@ -1,8 +1,8 @@
 <?xml version='1.0' encoding='utf-8'?>
 <widget id="it.extreme.ecsb" version="0.0.1" xmlns="http://www.w3.org/ns/widgets" xmlns:cdv="http://cordova.apache.org/ns/1.0">
-    <name>MyApp</name>
-    <description>An awesome Ionic/Cordova app.</description>
-    <author email="hi@ionicframework" href="http://ionicframework.com/">Ionic Framework Team</author>
+    <name>SISOP Mobile</name>
+    <description>Campanha de Instrumentação e Check List</description>
+    <author email="serratto@itextreme.com.br" href="http://www.itextreme.com.br/">SISOP Mobile</author>
     <content src="index.html" />
     <access origin="*" />
     <allow-intent href="http://*/*" />
@@ -87,6 +87,7 @@
     <allow-navigation href="http://192.168.15.30:8100" />
     <allow-navigation href="http://192.168.15.39:8100" />
     <allow-navigation href="http://192.168.15.14:8100" />
+    <allow-navigation href="http://192.168.15.24:8100" />
     <engine name="android" spec="~6.3.0" />
     <engine name="browser" spec="5.0.1" />
     <plugin name="ionic-plugin-keyboard" spec="^2.2.1" />
@@ -95,13 +96,6 @@
     <plugin name="cordova-plugin-splashscreen" spec="^4.0.3" />
     <plugin name="cordova-plugin-ionic-webview" spec="^1.1.16" />
     <plugin name="cordova-plugin-file" spec="^4.3.3" />
-    <plugin name="cordova-plugin-crosswalk-webview" spec="^2.3.0">
-        <variable name="XWALK_VERSION" value="23+" />
-        <variable name="XWALK_LITEVERSION" value="xwalk_core_library_canary:17+" />
-        <variable name="XWALK_COMMANDLINE" value="--disable-pull-to-refresh-effect" />
-        <variable name="XWALK_MODE" value="embedded" />
-        <variable name="XWALK_MULTIPLEAPK" value="true" />
-    </plugin>
     <plugin name="cordova-plugin-statusbar" spec="^2.2.3" />
     <plugin name="phonegap-plugin-barcodescanner" spec="^7.0.0" />
     <plugin name="cordova-sqlite-storage" spec="^2.1.0" />

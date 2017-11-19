@@ -1,0 +1,95 @@
+page-instrumento-detail-leitura-leitura {
+}
+.hlimit{
+    height: 40px !important;
+}
+button.picker-opt{
+    font-size: 15px !important;
+}
+table.dataTable{
+    table-layout: fixed;
+}
+table.dataTable *{
+    font-size: 14px;
+}
+.dataTable tr td{
+    height: 30px !important;
+}
+/* área de cabeçalho */
+.tdLblBlk{
+    color: map-get($colors, dark)!important;
+    text-align: right;    
+    font-weight: 600 !important;
+}
+.tdValLeitura {
+    color: map-get($colors, dark)!important;
+    text-align: left;    
+    font-weight: 400 !important;
+}
+.tdValLeitura>ion-item{
+    min-height: 20px !important;
+    padding-left: 4px; 
+    padding-top: 1px; 
+}
+/* ---> Datetime/Select picker */
+.tdValLeitura>ion-item>div.item-inner {
+    border: none !important;
+}
+/* ---> Datetime picker */
+.tdValLeitura>ion-item>div>div>ion-datetime {
+    padding: 5px 8px 0px 0px !important;
+    font-weight: normal; 
+    border: 1px solid map-get($colors, editable)!important;
+    width: 150px !important;
+    text-align: center;
+    font-weight: 400 !important;
+}
+/* ---> Select picker */
+.tdValLeitura>ion-item>div>div.input-wrapper>ion-select  {
+    padding: 3px 8px 0px 10px !important;
+    font-weight: normal;
+    border: 1px solid map-get($colors, editable)!important;
+    min-width: 200px !important;
+    max-width: 220px !important;
+}
+.tdValLeitura>ion-item>div>div.input-wrapper  {
+    max-width: 200px !important;
+}
+/* ---> Input */
+.tdValLeitura>input.numero, .tdValLeitura>ion-input.texto{
+    text-align: right;
+    width: 100px !important;
+}
+.tdValLeitura>input.numero, .tdValLeitura>ion-input.texto>input{
+    margin: 0px 4px !important;
+    border: 1px solid map-get($colors, editable)!important;
+    text-align: right;
+    padding: 2px;
+    width: 90px !important;
+}
+.tdValLeitura>ion-input.texto>input{
+    width: 190px !important;
+    text-align: left;
+}
+
+/* área de labels */
+.tdLbl{
+    color: map-get($colors, danger)!important;
+    text-align: right;    
+    font-weight: 600 !important;
+    padding-left: 10px !important;
+}
+.tdUmed{
+    color: map-get($colors, dark)!important;
+    text-align: left;    
+    font-weight: 400 !important;
+    padding-right: 20px !important;
+}
+
+/* apresenta ou não a area da leitura */
+.mostra{
+    display: inline;
+}
+.naoMostra{
+    display: none;
+}

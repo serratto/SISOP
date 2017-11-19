@@ -5,7 +5,7 @@ import { SISOPGlobals, UHEFile } from "../../shared/shared";
 import {
   InstrumentoDetailDetailPage,
   InstrumentoDetailHistoricoPage,
-  InstrumentoDetailLeituraPage
+  InstrumentoDetailLeituraCampanhaPage
 } from "../pages";
 
 @IonicPage()
@@ -15,23 +15,25 @@ import {
 })
 export class InstrumentoDetailHomePage {
   _globals: SISOPGlobals;
-  leituraTab = InstrumentoDetailLeituraPage;
+  leituraTab = InstrumentoDetailLeituraCampanhaPage;
   detalheTab = InstrumentoDetailDetailPage;
   historicoTab = InstrumentoDetailHistoricoPage;
-  selectedUhe: any;
-  instrumentoParm: any;
+  selectedUhe: any = { sigla: "" };
+  bubbleParms: any;
+  instrumento: any;
 
   constructor(public navCtrl: NavController, public navParams: NavParams) {
     this._globals = new SISOPGlobals();
     this.selectedUhe = new UHEFile();
-    this.instrumentoParm = this.navParams.data;
+    this.instrumento = this.navParams.data;
+    this.bubbleParms = { instrumento: this.instrumento, uhe: this.selectedUhe };
   }
 
   ionViewDidLoad() {
     this._globals.getCurrentUHE()
       .then(uhe => {
         this.selectedUhe = uhe;
+        this.bubbleParms.uhe = uhe;
       });
   }
-
 }

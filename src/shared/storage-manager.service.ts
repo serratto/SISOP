@@ -115,10 +115,9 @@ export class StorageManager {
             'Elemento',
             'Instrumento',
             'LabelLeitura',
-            'Ultimas12Leituras',
-            'LeituraValor',
             'MudancaEstado',
-            'ModeloInstrumentoTemplateLeitura'
+            'ModeloInstrumentoTemplateLeitura',
+            'kvPairTable'
         ];
         for (var index = 0; index < tabs.length; index++) {
             let command = 'delete from ' + tabs[index];
@@ -226,6 +225,7 @@ export class StorageManager {
             ", e.nome as 'estado'" +
             ", m.id as 'modeloid' " +
             ", ti.multiponto as 'multiponto' " +
+            ", ti.niveldagua as 'niveldagua' " +
             ", ti.id as 'tipoInstrumentoId' " +
             " from instrumento i " +
             " join modelos m on i.modeloId = m.id " +
@@ -347,6 +347,23 @@ export class StorageManager {
         let command = " select modeloInstrumentoId, templateLeituraId " +
             " from ModeloInstrumentoTemplateLeitura " +
             " where modeloInstrumentoId = ? ";
+        args.push(modeloInstrumentoId);
+
+        return new Promise<any>((resolve, reject) => {
+            this._sql.executeQuery(command, args)
+                .then((data) => resolve(data))
+                .catch((err) => reject(err));
+        });
+    }
+
+    public getVariaveisLeituraSituacao(tipoInstrumentoId: number, modeloInstrumentoId): Promise<any> {
+        var args = [];
+        let command = " select tipoinstrumentoid, situacaoleituraid, modeloinstrumentoid, " +
+            " templateLeituraId, unidademedida " +
+            " from VariavelLeituraSituacao " +
+            " where tipoinstrumentoid = ? " +
+            "   and modeloinstrumentoid = ? ";
+        args.push(tipoInstrumentoId);
         args.push(modeloInstrumentoId);
 
         return new Promise<any>((resolve, reject) => {

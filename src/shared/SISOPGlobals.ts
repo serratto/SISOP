@@ -11,7 +11,11 @@ export class SISOPGlobals {
     /* Variables */
     public instrumentoSelecionado: any;
 
-    /* cache UHE */
+    public currentDateDime() {
+        var tzoffset = (new Date()).getTimezoneOffset() * 60000; //offset in milliseconds
+        var localISOTime = (new Date(Date.now() - tzoffset)).toISOString().slice(0, -1);
+        return localISOTime;
+    }
 
     public getCurrentUHE(): Promise<UHEFile> {
         return new Promise<any>((resolve, reject) => {
