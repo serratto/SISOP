@@ -12,67 +12,100 @@
       </button>
     </ion-buttons>
   </ion-item>
+  <table class='dataTable'>
+    <tr>
+      <td class='tdLblBlk' width='100px'>Data leitura:</td>
+      <td class='tdValLeitura'>
+        <ion-item class='button'>
+          <ion-datetime displayFormat='DD/MM/YYYY HH:mm' pickerFormat='DD/MM/YYYY HH:mm' cancelText="Cancelar" doneText="Ok" [(ngModel)]="model.dataLeitura"></ion-datetime>
+        </ion-item>
+      </td>
+    </tr>
+    <tr>
+      <td class='tdLblBlk'>Situação:</td>
+      <td class='tdValLeitura'>
+        <ion-item class='select'>
+          <ion-select [(ngModel)]='model.situacao' interface='action-sheet' (ngModelChange)="changeSituacao()">
+            <ion-option *ngFor='let sit of situacoesLeitura' [value]='sit.id'>
+              {{sit.sigla}} - {{sit.nome}}
+            </ion-option>
+          </ion-select>
+        </ion-item>
+      </td>
+    </tr>
+    <tr>
+      <td class='tdLblBlk'>Nivel D´água:</td>
+      <td class='tdValLeitura'>
+        <input id='na' type='text' currencyMask [(ngModel)]="model.nivelDagua" [options]="{ prefix: '', thousands: '.', decimal: ',' }"
+          class='numero'>
+      </td>
+    </tr>
+    <tr>
+      <td class='tdLblBlk'>Comentário:</td>
+      <td class='tdValLeitura'>
+        <ion-input [(ngModel)]="model.observacao" type="text" class='texto'></ion-input>
+      </td>
+    </tr>
+  </table>
 </ion-header>
 <ion-content>
-  <div ion-fixed>
-    <table class='dataTable'>
+  <!-- SinglePoint -->
+  <div [ngClass]='mostraSinglePoint()'>
+    <!--temLeitura-->
+    <div [ngClass]='mostraLeitura()' style="float: right;">
+      <table class='dataTable'>
+        <tr *ngFor="let col of model.columns">
+          <td class='tdLbl'>{{col.label}}:</td>
+          <td class='tdValLeitura'>
+            <input currencyMask [(ngModel)]="col.valor" [options]="{ prefix: '', thousands: '.', decimal: ',' }" class='numero'>
+          </td>
+          <td class='tdUmed'>{{col.umed}}</td>
+        </tr>
+      </table>
+    </div>
+  </div>
+  <!-- MultiPoint -->
+  <div [ngClass]='mostraMultiPoint()' class='divMP'>
+    <table class='dataTableMP'>
       <tr>
-        <td class='tdLblBlk' width='100px'>Data leitura:</td>
-        <td class='tdValLeitura'>
-          <ion-item class='button'>
-            <ion-datetime displayFormat='DD/MM/YYYY HH:mm' pickerFormat='DD/MM/YYYY HH:mm' cancelText="Cancelar" doneText="Ok" [(ngModel)]="model.dataLeitura"></ion-datetime>
-          </ion-item>
-        </td>
+        <th *ngFor="let col of columns">
+          {{col.label}}
+        </th>
       </tr>
       <tr>
-        <td class='tdLblBlk'>Situação:</td>
-        <td class='tdValLeitura'>
-          <ion-item class='select'>
-            <ion-select [(ngModel)]='model.situacao' interface='action-sheet' (ngModelChange)="changeSituacao()">
-              <ion-option *ngFor='let sit of situacoesLeitura' [value]='sit.id'>
-                {{sit.sigla}} - {{sit.nome}}
-              </ion-option>
-            </ion-select>
-          </ion-item>
-        </td>
-      </tr>
-      <tr>
-        <td class='tdLblBlk'>Nivel D´água:</td>
-        <td class='tdValLeitura'>
-          <input id='na' type='text' currencyMask [(ngModel)]="model.nivelDagua" [options]="{ prefix: '', thousands: '.', decimal: ',' }"
-            class='numero'>
-        </td>
-      </tr>
-      <tr>
-        <td class='tdLblBlk'>Comentário:</td>
-        <td class='tdValLeitura'>
-          <ion-input [(ngModel)]="model.observacao" type="text" class='texto'></ion-input>
+        <td *ngFor="let col of columns" class='col{{col.seq}} tdValLeitura'>
+          <span *ngIf="showLabel(col, rowId)">
+            {{getLabel(rowId)}}
+          </span>
+          <input currencyMask [(ngModel)]="valorMultipontoCorrente[col.templateleituraid]" *ngIf="!showLabel(col,rowId)" [options]="{ prefix: '', thousands: '.', decimal: ',', precision: 3 }"
+            class='numero' (ngModelChange)='compareToLimits(col.templateleituraid)'>
         </td>
       </tr>
     </table>
-    <!-- SinglePoint -->
-    <div [ngClass]='mostraSinglePoint()'>
-      <!--temLeitura-->
-      <div [ngClass]='mostraLeitura()' style="float: right;">
-        <table class='dataTable'>
-          <tr *ngFor="let col of model.columns">
-            <td class='tdLbl'>{{col.label}}:</td>
-            <td class='tdValLeitura'>
-              <input currencyMask [(ngModel)]="col.valor" [options]="{ prefix: '', thousands: '.', decimal: ',' }" class='numero'>
-            </td>
-            <td class='tdUmed'>{{col.umed}}</td>
-          </tr>
-          <tr>
-            <td colspan=2>
+    <ion-item no-padding>
+      <ion-buttons item-end>
+        <button ion-button icon-only small color="danger" (click)="prev()" [disabled]="prevEnabled()?'':'disabled'">
+          <ion-icon name='arrow-dropleft'></ion-icon>
+        </button>
+      </ion-buttons>
+      <ion-buttons item-end>
+        <button ion-button icon-only small color="danger" (click)="next()" [disabled]="nextEnabled()?'':'disabled'">
+          <ion-icon name='arrow-dropright'></ion-icon>
+        </button>
+      </ion-buttons>
+    </ion-item>
 
-            </td>
-          </tr>
-        </table>
+    <div class='errTable' width='100%'>
+      <div *ngFor='let erro of consistencia'>
+        <div class='labelErr {{erro.level}}'>
+          <span class='errTitle'>{{erro.coluna}}:</span>
+          <br/>
+          <span class='errMsg'>{{erro.mensagem}}</span>
+        </div>
       </div>
     </div>
-    <!-- MultiPoint -->
-    <div [ngClass]='mostraMultiPoint()'>MULTIPOINT
 
-    </div>
+
+    valoresMultiponto:{{valoresMultiponto |json}}
   </div>
 </ion-content>

@@ -3,6 +3,7 @@ import {
   IonicPage, NavController, NavParams,
   ViewController
 } from 'ionic-angular';
+import _ from "lodash";
 
 @IonicPage()
 @Component({
@@ -22,7 +23,14 @@ export class InstrumentoDetailLeituraErroPage {
   }
 
   ionViewDidLoad() {
-    console.log(this.erros);
+  }
+
+  hasOnlyAlert(): boolean {
+    var danger = _.find(this.erros, function (err) { return err.level == 'danger' });
+    if (danger) {
+      return false;
+    }
+    return true;
   }
 
   save() {
@@ -30,8 +38,5 @@ export class InstrumentoDetailLeituraErroPage {
   }
   cancel() {
     this.viewCtrl.dismiss({ option: 'cancel' });
-  }
-
-  private dismiss() {
   }
 }

@@ -1,29 +1,33 @@
 <ion-header>
   <ion-item no-padding class='head'>
-    <ion-title>Inconsistências: {{instrumento.modelo}}-{{instrumento.numero}}</ion-title>
+    <ion-title item-start>Inconsistências: {{instrumento.modelo}}-{{instrumento.numero}}</ion-title>
   </ion-item>
+  <div class='errTable' width='100%'>
+    <div class='errHead'>Descrição dos erros</div>
+  </div>
 </ion-header>
-
 <ion-content padding>
-
-  <table class='errTable' width='100%'>
-    <tr>
-      <th>Descrição</th>
-    </tr>
-    <tr *ngFor='let erro of erros'>
-      <td>
-        <p class='labelErr {{erro.level}}'>{{erro.coluna}}:</p>
-        <p class='msgErr {{erro.level}}'>
-          {{erro.mensagem}}</p>
-      </td>
-    </tr>
-  </table>
-
-
-  <button ion-button color="danger" (click)="cancel()">
-    Cancelar
-  </button>
-  <button ion-button (click)="save()">
-    Salvar
-  </button>
+  <div class='errTable' width='100%'>
+    <div *ngFor='let erro of erros'>
+      <div class='labelErr {{erro.level}}'>
+        <span class='errTitle'>{{erro.coluna}}:</span>
+        <br/>
+        <span class='errMsg'>{{erro.mensagem}}</span>
+      </div>
+    </div>
+  </div>
 </ion-content>
+<ion-footer>
+  <ion-item>
+    <ion-buttons start>
+      <button item-start ion-button color="danger" (click)="cancel()">
+        Cancelar
+      </button>
+    </ion-buttons>
+    <ion-buttons item-end>
+      <button ion-button (click)="save()" [disabled]="hasOnlyAlert()?'':'disabled'">
+        Salvar
+      </button>
+    </ion-buttons>
+  </ion-item>
+</ion-footer>

@@ -69,47 +69,100 @@
     text-align: right !important;
 }
 
-/* Grid Erro */
-
-table.errTable{
-    width:100%;
+/* SearchBar */
+/* subtitulo */
+div.stSearch{
+    font-size: 16px !important;
+    font-weight: 700 !important;   
+    color: map-get($colors, light) !important;
+    text-align: center;
+}
+ion-toolbar.searchBar>div>ion-searchbar *{
+    font-size: 14px !important;
+}
+ion-toolbar.searchBar>div>ion-searchbar *{
+    font-size: 14px !important;
+}
+ion-toolbar.searchBar>div>ion-searchbar>div>input{
+    font-size: 14px !important;
+    height: 30px !important;
+}
+ion-toolbar.searchBar>div>ion-searchbar>div>div{
+    top: 6px !important;
+}
+ion-toolbar.searchBar > ion-buttons > button{
+    border: 1px solid map-get($colors, light);
 }
 
-table.errTable>tbody>tr>th{
+table.tbSearch{
+    width: 100% !important;
+}
+table.tbSearch>tbody *{
+    font-size: 15px !important;
+    color: map-get($colors, dark) !important;
+}
+table.tbSearch>tbody>tr>th{
+    font-size: 16px !important;
+    font-weight: 700 !important;   
+    background-color: map-get($colors, secondary) !important;
+    color: map-get($colors, light) !important;
+    padding: 5px 10px;
+    text-align: left !important;
+    text-transform: none;
+    border-top: 1px solid map-get($colors, editable) !important;
+    
+}
+table.tbSearch>tbody>tr>th.instr, table.tbSearch>tbody>tr>td.instr{
+    width: 150px !important;
+}
+table.tbSearch>tbody>tr>td *{
+    font-weight: 400 !important;   
+    padding: 10px 10px;
+    border-bottom: 1px solid map-get($colors, editable) !important;
+}
+table.tbSearch>tbody>tr>td>button *{
+    padding: 0px !important;
+    margin: 0px !important;
+    align-items: left !important;
+    justify-content: left;
+}
+table.tbSearch>tbody>tr>td>button>span{
+    border-bottom: none !important;
+    text-align: left !important;
+    text-transform: none;
+}    
+    
+/* Grid Erro */
+div.errTable{
+}
+
+div.errTable>div.errHead{
     padding: 10px;
     font-size: 18px;
     font-weight: 700 !important; 
     background-color:  map-get($colors, secondary);
     color: map-get($colors, dark);
     padding: 20px;
+    text-align: center;
 }    
-
-table.errTable>tbody>tr{
-}
     
-table.errTable>tbody>tr>td>p.labelErr{
+div.errTable>div>div.labelErr{
     font-size: 14px !important;
     font-weight: 700 !important; 
-    width: 100%;  
-    border-bottom: 1px solid map-get($colors, dark) !important;
-    border: 1px solid map-get($colors, dark) !important;
+    border-bottom: 2px solid map-get($colors, dark) !important;
     padding: 5px 0px 5px 5px; 
 }
-
-table.errTable>tbody>tr>td>p.msgErr{
-    font-size: 14px !important;
-    font-weight: 700 !important; 
-    padding-left: 10px;
-    width: 100%;  
-    border-bottom: 1px solid map-get($colors, dark) !important;
-    border: 1px solid map-get($colors, dark) !important;
-}
-
-table.errTable>tbody>tr>td>p.alert{
+div.errTable>div>div.alert{
     background-color:  map-get($colors, alert);
 }
 
-table.errTable>tbody>tr>td>p.danger{
+div.errTable>div>div.danger{
     background-color:  map-get($colors, danger);
 }
     
+div.errTable>div>div.labelErr>span.errTitle{
+}
+div.errTable>div>div.labelErr>span.errMsg{
+    font-weight: 400 !important; 
+    padding-left: 20px;
+}

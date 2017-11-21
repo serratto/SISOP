@@ -2,8 +2,8 @@
 <ion-header>
   <ion-navbar>
   </ion-navbar>
-  <ion-toolbar color="primary" text-center>
-    <ion-title> {{tipoSelected.sigla}} - {{tipoSelected.nome}}</ion-title>
+  <ion-toolbar color="secondary" class="searchBar" text-center>
+    <div class='stSearch'>{{tipoSelected.sigla}} - {{tipoSelected.nome}}</div>
     <ion-searchbar placeholder="digite para filtrar" (ionInput)="atualizaInstrumentos($event)"></ion-searchbar>
     <ion-buttons end>
       <button ion-button icon-only (click)='closeThis()'>
@@ -11,21 +11,27 @@
       </button>
     </ion-buttons>
   </ion-toolbar>
-  <ion-item no-padding class='head'>
-    <ion-title item-start>Instrumento</ion-title>
-    <ion-title item-end>Estado</ion-title>
-  </ion-item>
+  <table class='tbSearch'>
+    <tr>
+      <th class='instr'>Instrumento</th>
+      <th class='estado'>Estado</th>
+    </tr>
+  </table>
 </ion-header>
 <!-- navbar precisa ficar para deslocar o conteúdo para a posição correta -->
 <ion-content>
-  <ion-list>
-    <ion-item *ngFor="let instrumento of instrFilter" class='listHeight'>
-      <button ion-button (click)='selectInstrumento($event, instrumento)' ion-button outline full clear>
-        <ion-item no-padding class='detail'>
-          <ion-title item-start>{{instrumento.modelo}}-{{instrumento.numero}}</ion-title>
-          <ion-title item-end>{{instrumento.estado}}</ion-title>
-        </ion-item>
-      </button>
-    </ion-item>
-  </ion-list>
+  <table class='tbSearch'>
+    <tr *ngFor="let instrumento of instrFilter" class='tbSearch'>
+      <td class='instr'>
+        <button ion-button (click)='selectInstrumento($event, instrumento)' ion-button outline full clear>
+          {{instrumento.modelo}}-{{instrumento.numero}}
+        </button>
+      </td>
+      <td class='estado'>
+        <button ion-button (click)='selectInstrumento($event, instrumento)' ion-button outline full clear>
+          {{instrumento.estado}}
+        </button>
+      </td>
+    </tr>
+  </table>
 </ion-content>
