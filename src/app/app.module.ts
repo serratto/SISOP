@@ -13,12 +13,23 @@ import { Device } from '@ionic-native/device';
 /* Módulo de máscara */
 import { CurrencyMaskModule } from "ng2-currency-mask";
 
-/* Páginas */
+/* Páginas -- Home */
+import { HomePage, InstalacaoSelectPage } from '../pages/pages';
+
+/* Páginas -- Select Instrumento */
 import {
-  HomePage,
-  InstalacaoSelectPage, SelectInstrumentoHomePage,
-  SelectInstrumentoBarCodePage, SelectInstrumentoTypingPage,
-  SelectInstrumentoSearchPage,
+  SelectInstrumentoHomePage, SelectInstrumentoBarCodePage,
+  SelectInstrumentoTypingPage, SelectInstrumentoSearchPage
+} from '../pages/pages';
+
+/* Páginas -- Leitura */
+import {
+  LeituraHomePage, LeituraLeituraPage, LeituraLeituraMultipontoPage,
+  LeituraCampanhaPage, LeituraUltimas12Page, LeituraUltimas12DetalhePage,
+  LeituraInstrumentoPage
+} from '../pages/pages';
+/* transition */
+import {
   InstrumentoDetailHomePage, InstrumentoDetailDetailPage,
   InstrumentoDetailHistoricoPage,
   InstrumentoDetailHistoricoDetailPage,
@@ -35,12 +46,20 @@ import { StorageManager, StorageSql, StorageWeb } from '../shared/shared';
 @NgModule({
   declarations: [
     MyApp,
+    /* Páginas -- Home */
     HomePage,
     InstalacaoSelectPage,
-    SelectInstrumentoHomePage,
-    SelectInstrumentoBarCodePage,
-    SelectInstrumentoTypingPage,
-    SelectInstrumentoSearchPage,
+    /* Páginas -- Select Instrumento */
+    SelectInstrumentoHomePage, SelectInstrumentoBarCodePage,
+    SelectInstrumentoTypingPage, SelectInstrumentoSearchPage,
+    /* Páginas -- Leitura */
+    LeituraHomePage,
+    LeituraLeituraPage, LeituraLeituraMultipontoPage,
+    LeituraCampanhaPage,
+    LeituraUltimas12Page, LeituraUltimas12DetalhePage,
+    LeituraInstrumentoPage,
+
+    /* transition */
     InstrumentoDetailHomePage, InstrumentoDetailDetailPage,
     InstrumentoDetailHistoricoPage,
     InstrumentoDetailHistoricoDetailPage,
@@ -56,12 +75,19 @@ import { StorageManager, StorageSql, StorageWeb } from '../shared/shared';
   bootstrap: [IonicApp],
   entryComponents: [
     MyApp,
+    /* Páginas -- Home */
     HomePage,
     InstalacaoSelectPage,
-    SelectInstrumentoHomePage,
-    SelectInstrumentoBarCodePage,
-    SelectInstrumentoTypingPage,
-    SelectInstrumentoSearchPage,
+    /* Páginas -- Select Instrumento */
+    SelectInstrumentoHomePage, SelectInstrumentoBarCodePage,
+    SelectInstrumentoTypingPage, SelectInstrumentoSearchPage,
+    /* Páginas -- Leitura */
+    LeituraHomePage,
+    LeituraLeituraPage, LeituraLeituraMultipontoPage,
+    LeituraCampanhaPage,
+    LeituraUltimas12Page, LeituraUltimas12DetalhePage,
+    LeituraInstrumentoPage,
+    /* transition */
     InstrumentoDetailHomePage, InstrumentoDetailDetailPage,
     InstrumentoDetailHistoricoPage,
     InstrumentoDetailHistoricoDetailPage,

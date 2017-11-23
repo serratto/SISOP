@@ -54,10 +54,27 @@ $colors: (
 // App Material Design Variables
 // --------------------------------------------------
 // Material Design only Sass variables can go here
+$toolbar-md-title-font-size: 16px;
+$toolbar-md-height: 40px;
+
+$tabs-md-tab-min-height: 40px;
+$tabs-md-tab-icon-color: map-get($colors, dark);
+$tabs-md-tab-icon-color-active: map-get($colors, light);
+
+$card-md-font-size: 14px;
+$card-md-header-font-size: 14px;
+$card-md-header-padding: 10px;
+
+$action-sheet-md-button-font-size: 14px;
+$action-sheet-md-title-font-size: 14px;
+$action-sheet-md-button-min-height: 30px;
+$action-sheet-md-title-padding-bottom: 5px;
+$action-sheet-md-title-padding-top: 5px;
+$action-sheet-md-title-color: map-get($colors, light);
 
 
 
-
+// $action-sheet-md-button-background: map-get($colors, secondary);
 // App Windows Variables
 // --------------------------------------------------
 // Windows only Sass variables can go here

@@ -3,8 +3,8 @@ import {
   IonicPage, NavController, NavParams, App,
   LoadingController, AlertController
 } from 'ionic-angular';
-import { SISOPGlobals, StorageManager } from "../../shared/shared";
-import { SelectInstrumentoSearchPage, InstrumentoDetailHomePage } from "../pages";
+import { SISOPGlobals, StorageManager } from "../../../shared/shared";
+import { SelectInstrumentoSearchPage, LeituraHomePage } from "../../pages";
 import _ from 'lodash';
 
 @IonicPage()
@@ -62,7 +62,7 @@ export class SelectInstrumentoTypingPage {
       this._globals.instrumentoSelecionado = null;
 
       /* Chama a tela de detalhes do instrumento */
-      this.app.getRootNav().push(InstrumentoDetailHomePage, parmInstrumento);
+      this.app.getRootNav().push(LeituraHomePage, parmInstrumento);
     }
   }
 

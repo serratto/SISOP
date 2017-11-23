@@ -1,0 +1,12 @@
+<ion-header>
+  <ion-navbar color=primary>
+    <button ion-button menuToggle>
+      <ion-icon name="menu"></ion-icon>
+    </button>
+    <ion-title>{{selectedUhe.name}}</ion-title>
+  </ion-navbar>
+</ion-header>
+<ion-tabs>
+  <ion-tab tabIcon="locate" [root]='typingTab' [rootParams]="selectedUhe"></ion-tab>
+  <ion-tab tabIcon="barcode" [root]='barcodeTab' [rootParams]="selectedUhe"></ion-tab>
+</ion-tabs>

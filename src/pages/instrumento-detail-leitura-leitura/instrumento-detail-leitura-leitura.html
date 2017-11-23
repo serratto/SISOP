@@ -77,8 +77,8 @@
           <span *ngIf="showLabel(col, rowId)">
             {{getLabel(rowId)}}
           </span>
-          <input currencyMask [(ngModel)]="valorMultipontoCorrente[col.templateleituraid]" *ngIf="!showLabel(col,rowId)" [options]="{ prefix: '', thousands: '.', decimal: ',', precision: 3 }"
-            class='numero' (ngModelChange)='compareToLimits(col.templateleituraid)'>
+          <input [(ngModel)]="valorMultipontoCorrente[col.templateleituraid]" *ngIf="!showLabel(col,rowId)"
+          class='numero' (ngModelChange)='compareToLimits(col.templateleituraid)'>
         </td>
       </tr>
     </table>
@@ -106,6 +106,5 @@
     </div>
 
 
-    valoresMultiponto:{{valoresMultiponto |json}}
   </div>
 </ion-content>

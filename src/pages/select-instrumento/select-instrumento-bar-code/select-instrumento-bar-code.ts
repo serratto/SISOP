@@ -2,7 +2,7 @@ import { Component } from '@angular/core';
 import { IonicPage, NavController, NavParams, App } from 'ionic-angular';
 import { BarcodeScanner } from '@ionic-native/barcode-scanner';
 
-import { InstrumentoDetailHomePage } from "../pages";
+import { InstrumentoDetailHomePage } from "../../pages";
 
 @IonicPage()
 @Component({

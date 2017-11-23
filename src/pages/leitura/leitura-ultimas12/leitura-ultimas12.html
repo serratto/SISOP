@@ -1,0 +1,24 @@
+<ion-header>
+  <ion-navbar>
+    <ion-title></ion-title>
+  </ion-navbar>
+  <ion-item no-padding color="secondary" class='subtitle'>
+    <ion-title item-start>12 Últimas Leituras</ion-title>
+  </ion-item>
+</ion-header>
+<ion-content>
+  <table class='leituras12'>
+    <tr *ngFor="let leitura of parms.ultimasLeituras">
+      <td>
+        <ion-badge>{{leitura.Idx}}</ion-badge>
+      </td>
+      <td>{{leitura.DataLeitura}}</td>
+      <td *ngIf="showLeitura">{{leitura.Valores[0].Valor | number:'1.2-2'}}</td>
+      <td>
+        <button ion-button icon-only outline light small (click)='selectLeitura(leitura)'>
+          <ion-icon name='arrow-dropright'></ion-icon>
+        </button>
+      </td>
+    </tr>
+  </table>
+</ion-content>

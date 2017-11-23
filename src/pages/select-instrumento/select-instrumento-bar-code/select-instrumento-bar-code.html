@@ -11,7 +11,7 @@
     </ion-card-header>
     <ion-card-content>
       <ion-item>
-        <button item-right ion-button (click)='readBarcode()' icon-only large>
+        <button item-right ion-button (click)='readBarcode()' icon-only class='barcodeBtn'>
           <ion-icon name="search"></ion-icon>
         </button>
         <ion-input [(ngModel)]='readCode' [disabled]='true'></ion-input>
@@ -20,8 +20,6 @@
   </ion-card>
 
   <ion-card class="center">
-    <ion-card-header>
-      Alterne para o modo de digitação<br/>no menu abaixo.
-    </ion-card-header>
+      Alterne para o modo de digitação no menu abaixo.
   </ion-card>
 </ion-content>

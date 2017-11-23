@@ -1,13 +1,15 @@
 <ion-header>
-  <ion-navbar>
+  <ion-navbar color=primary>
     <button ion-button menuToggle>
       <ion-icon name="menu"></ion-icon>
     </button>
     <ion-title >{{selectedUhe.sigla}}: {{instrumento.modelo}}-{{instrumento.numero}}</ion-title>
   </ion-navbar>
 </ion-header>
+
 <ion-tabs>
-  <ion-tab tabTitle="Leitura" [root]='leituraTab' [rootParams]="bubbleParms" tabIcon="speedometer"></ion-tab>
-  <ion-tab tabTitle="Últimas Leituras" [root]='historicoTab' [rootParams]="bubbleParms" tabIcon="funnel"></ion-tab>
-  <ion-tab tabTitle="Detalhe" [root]='detalheTab' [rootParams]="bubbleParms" tabIcon="clipboard"></ion-tab>
+  <ion-tab [root]='leituraTab' [rootParams]="bubbleParms" tabIcon="speedometer"></ion-tab>
+  <ion-tab [root]='historicoTab' [rootParams]="bubbleParms" tabIcon="funnel"></ion-tab>
+  <ion-tab [root]='detalheTab' [rootParams]="bubbleParms" tabIcon="clipboard"></ion-tab>
+  <ion-tab [root]='detalheTab' [rootParams]="bubbleParms" tabIcon="clipboard"></ion-tab>
 </ion-tabs>

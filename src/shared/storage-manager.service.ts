@@ -223,6 +223,7 @@ export class StorageManager {
         let comm = " select i.id, m.sigla as 'modelo', " +
             "substr('0000'|| i.numero,-4, 4) as 'numero'" +
             ", e.nome as 'estado'" +
+            ", i.estadoid as 'estadoid'" +
             ", m.id as 'modeloid' " +
             ", ti.multiponto as 'multiponto' " +
             ", ti.niveldagua as 'niveldagua' " +

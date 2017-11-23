@@ -1,0 +1,58 @@
+<ion-header>
+  <ion-navbar color='primary' class='modalTitle'>
+    <ion-item>
+      <button item-start ion-button small color="light" (click)="dismiss()">
+        <ion-icon name="close"></ion-icon>
+      </button>
+      <ion-title item-end>Leitura ({{parms.leituraCorrente.Idx}}): {{parms.uhe.sigla}}-{{parms.instrumento.modelo}}-{{parms.instrumento.numero}}</ion-title>
+    </ion-item>
+  </ion-navbar>
+  <ion-item no-padding color="secondary" class='subtitle'>
+    <ion-buttons item-end>
+      <button ion-button item-start small icon-only color='dark' (click)="previous()" [disabled]="prevDisable()">
+        <ion-icon name='arrow-dropleft'></ion-icon>
+      </button>
+      <ion-badge item-end style='height: 27px !important;'>{{parms.leituraCorrente.Idx}}</ion-badge>
+      <button ion-button item-end small icon-only color='dark' (click)="next()" [disabled]="nextDisable()">
+        <ion-icon name='arrow-dropright'></ion-icon>
+      </button>
+    </ion-buttons>
+    <ion-title item-start>Data: {{parms.leituraCorrente.DataLeitura}}</ion-title>
+  </ion-item>
+</ion-header>
+<ion-content>
+  <table class='leituras12' *ngIf="isDataAvailable">
+    <tr>
+      <td class='lbl'>Data:</td>
+      <td class='data'>{{parms.leituraCorrente.DataLeitura}}</td>
+    </tr>
+    <tr>
+      <td class='lbl'>Situação:</td>
+      <td class='data'>{{situacaoLeitura.sigla}}-{{situacaoLeitura.nome}}</td>
+    </tr>
+    <tr>
+      <td class='lbl'>Nível D'água:</td>
+      <td class='data'>{{parms.leituraCorrente.NivelDagua}}</td>
+    </tr>
+    <tr>
+      <td class='lbl'>Observação:</td>
+      <td class='data'>{{parms.leituraCorrente.Observacao}}</td>
+    </tr>
+  </table>
+  <!-- MultiPonto -->
+  <table class='leituras12' *ngIf="multiponto">
+    <tr>
+      <td *ngFor="let col of columns" class='lbl'>{{col.label}}</td>
+    </tr>
+    <tr *ngFor="let row of rows">
+      <td *ngFor="let col of columns" [ngClass]='getClass(col)'>{{getVal(row,col)}}</td>
+    </tr>
+  </table>
+  <!-- SinglePoint -->
+  <table class='leituras12' *ngIf="!multiponto">
+    <tr *ngFor="let col of columns">
+      <td class='lbl'>{{col.label}}:</td>
+      <td class='dataNmbr'>{{col.valor | number:'1.3-3'}}</td>
+    </tr>
+  </table>
+</ion-content>

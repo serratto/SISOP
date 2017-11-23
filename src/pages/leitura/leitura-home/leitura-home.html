@@ -1,0 +1,15 @@
+<!-- navbar precisa ficar para deslocar o conteúdo para a posição correta -->
+<ion-header>
+  <ion-navbar color='primary'>
+    <ion-title>{{parms.uhe.sigla}}: {{parms.instrumento.modelo}}-{{parms.instrumento.numero}}</ion-title>
+  </ion-navbar>
+</ion-header>
+<!-- navbar precisa ficar para deslocar o conteúdo para a posição correta -->
+
+<ion-tabs>
+  <ion-tab tabIcon="speedometer" [show]='nmultipoint()' [root]='leituraTab' [rootParams]="parms"></ion-tab>
+  <ion-tab tabIcon="speedometer" [show]='multipoint()' [root]='leituraMultiPontoTab' [rootParams]="parms"></ion-tab>
+  <ion-tab tabIcon="funnel" [root]='campanhaTab' [rootParams]="parms"></ion-tab>
+  <ion-tab tabIcon="clock" [root]='ultimas12Tab' [rootParams]="parms"></ion-tab>
+  <ion-tab tabIcon="clipboard" [root]='instrumentoTab' [rootParams]="parms"></ion-tab>
+</ion-tabs>

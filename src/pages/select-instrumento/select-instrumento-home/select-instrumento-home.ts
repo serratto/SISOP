@@ -1,9 +1,9 @@
 import { Component } from '@angular/core';
 import { IonicPage, NavController, NavParams } from 'ionic-angular';
 
-import { SelectInstrumentoBarCodePage, SelectInstrumentoTypingPage } from "../pages";
+import { SelectInstrumentoBarCodePage, SelectInstrumentoTypingPage } from "../../pages";
 
-import { SISOPGlobals, UHEFile } from "../../shared/shared";
+import { SISOPGlobals, UHEFile } from "../../../shared/shared";
 
 @IonicPage()
 @Component({

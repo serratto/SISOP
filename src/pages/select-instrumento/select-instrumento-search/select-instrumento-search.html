@@ -10,16 +10,16 @@
         <ion-icon name='close'></ion-icon>
       </button>
     </ion-buttons>
+    <table class='tbSearch'>
+      <tr>
+        <th class='instr'>Instrumento</th>
+        <th class='estado'>Estado</th>
+      </tr>
+    </table>
   </ion-toolbar>
-  <table class='tbSearch'>
-    <tr>
-      <th class='instr'>Instrumento</th>
-      <th class='estado'>Estado</th>
-    </tr>
-  </table>
 </ion-header>
 <!-- navbar precisa ficar para deslocar o conteúdo para a posição correta -->
-<ion-content>
+<ion-content class=''>
   <table class='tbSearch'>
     <tr *ngFor="let instrumento of instrFilter" class='tbSearch'>
       <td class='instr'>

@@ -38,8 +38,10 @@ export class InstrumentoDetailLeituraLeituraPage {
   labelsLeitura = [];
   rowId: number = 0;
   valorMultipontoCorrente: any;
-  // valorMultipontoCorrenteChecked: boolean = false;
   valoresMultiponto = [];
+  /* Variável para validação instantânea dos multipontos */
+  consistencia: Array<any>;
+
 
   constructor(public navCtrl: NavController,
     public navParams: NavParams,
@@ -90,78 +92,6 @@ export class InstrumentoDetailLeituraLeituraPage {
           loader.dismiss();
         });
     });
-  }
-
-  save() {
-    var err = [];
-    /* Validações */
-    /* -->> Situação */
-    if (!this.model.situacao || this.model.situacao == 0) {
-      err.push({ coluna: "Situação", mensagem: "Não fornecido", level: 'danger' });
-    }
-    /* -->> Nivel dágua */
-    if ((this.instrumento.niveldagua != 0) &&
-      (!this.model.nivelDagua || parseFloat(this.model.nivelDagua) == 0)) {
-      err.push({ coluna: "Nível D´água", mensagem: "Não fornecido", level: 'danger' });
-    }
-
-    /* Validações para NAO-MULTIPONTO */
-    if (!this.multiponto) {
-      /* --> Valores */
-      var valores12 = [];
-      for (let lei12idx = 0; lei12idx < this.ultimasLeituras.length; lei12idx++) {
-        var leitura = this.ultimasLeituras[lei12idx];
-        for (let valLeit = 0; valLeit < leitura.Valores.length; valLeit++) {
-          const vals = leitura.Valores[valLeit];
-          valores12.push(vals);
-        }
-      }
-      var max: number;
-      var min: number;
-      for (let idxCols = 0; idxCols < this.model.columns.length; idxCols++) {
-        var valCol = this.model.columns[idxCols];
-        var maxItem = _.maxBy(valores12, function (val12) {
-          if (val12.TemplateLeituraId == valCol.templateLeituraId) {
-            return val12.Valor;
-          }
-        });
-        var minItem = _.minBy(valores12, function (val12) {
-          if (val12.TemplateLeituraId == valCol.templateLeituraId) {
-            return val12.Valor;
-          }
-        });
-        max = parseFloat(maxItem.Valor.replace(',', '.'));
-        min = parseFloat(minItem.Valor.replace(',', '.'));
-
-        if (!valCol.valor) {
-          err.push({ coluna: valCol.label, mensagem: "Não fornecido", level: 'danger' });
-        }
-        else {
-          if (valCol.valor < min || valCol.valor > max) {
-            err.push({
-              coluna: valCol.label,
-              mensagem: "Fora da faixa (min: "
-                + min + " / max: " + max + ")", level: 'alert'
-            });
-          }
-        }
-      }
-    }
-
-    /* se tiver erro, mostra modal */
-    if (err.length > 0) {
-      let parm = { instrumento: this.instrumento, erros: err };
-      let errModal = this.modalController.create(InstrumentoDetailLeituraErroPage, parm);
-      errModal.onDidDismiss(data => this.modalErrorClose(data));
-      errModal.present();
-    }
-    else{
-      console.log('VAMOS SALVAR');
-    }
-  }
-
-  modalErrorClose(data) {
-    console.log('InstrumentoDetailLeituraLeituraPage', data);
   }
 
   changeSituacao() {
@@ -311,9 +241,18 @@ export class InstrumentoDetailLeituraLeituraPage {
     this.setCurrentAccordingToIdx();
   }
 
-  consistencia: Array<any>;
   compareToLimits(templateleituraId) {
     this.consistencia = [];
+    var valor = this.valorMultipontoCorrente[templateleituraId];
+    if (valor.length == 1 && valor == '-') return;
+    valor = valor.replace(',', '.');
+    if (isNaN(valor)) {
+      valor = "0";
+    };
+    this.valorMultipontoCorrente[templateleituraId] = Number(valor);
+    // rangeToCheck.push(Number(val.Valor.replace(',', '.')).toFixed(3));
+
+
     var tl = _.find(this.templatesLeitura, function (t) { return t.templateLeituraId == templateleituraId });
     var minmax = this.getMinMaxToCurrentPoint(templateleituraId)
     if (this.valorMultipontoCorrente[templateleituraId] < minmax.minimo ||
@@ -475,7 +414,7 @@ export class InstrumentoDetailLeituraLeituraPage {
     });
   }
 
-  /* fecha a janela corrente */
+  /* Processos de validação, fechamento da janela e salvamento */
   dismiss() {
     if (this.hasChanges()) {
       let alert = this.alert.create({
@@ -502,4 +441,86 @@ export class InstrumentoDetailLeituraLeituraPage {
       this.viewCtrl.dismiss();
     }
   }
+
+  save() {
+    var err = [];
+    /* Validações */
+    /* -->> Situação */
+    if (!this.model.situacao || this.model.situacao == 0) {
+      err.push({ coluna: "Situação", mensagem: "Não fornecido", level: 'danger' });
+    }
+    /* -->> Nivel dágua */
+    if ((this.instrumento.niveldagua != 0) &&
+      (!this.model.nivelDagua || parseFloat(this.model.nivelDagua) == 0)) {
+      err.push({ coluna: "Nível D´água", mensagem: "Não fornecido", level: 'danger' });
+    }
+
+    /* Validações para NAO-MULTIPONTO */
+    if (!this.multiponto) {
+      /* --> Valores */
+      var valores12 = [];
+      for (let lei12idx = 0; lei12idx < this.ultimasLeituras.length; lei12idx++) {
+        var leitura = this.ultimasLeituras[lei12idx];
+        for (let valLeit = 0; valLeit < leitura.Valores.length; valLeit++) {
+          const vals = leitura.Valores[valLeit];
+          valores12.push(vals);
+        }
+      }
+      var max: number;
+      var min: number;
+      for (let idxCols = 0; idxCols < this.model.columns.length; idxCols++) {
+        var valCol = this.model.columns[idxCols];
+        var maxItem = _.maxBy(valores12, function (val12) {
+          if (val12.TemplateLeituraId == valCol.templateLeituraId) {
+            return val12.Valor;
+          }
+        });
+        var minItem = _.minBy(valores12, function (val12) {
+          if (val12.TemplateLeituraId == valCol.templateLeituraId) {
+            return val12.Valor;
+          }
+        });
+        max = parseFloat(maxItem.Valor.replace(',', '.'));
+        min = parseFloat(minItem.Valor.replace(',', '.'));
+
+        if (!valCol.valor) {
+          err.push({ coluna: valCol.label, mensagem: "Não fornecido", level: 'danger' });
+        }
+        else {
+          if (valCol.valor < min || valCol.valor > max) {
+            err.push({
+              coluna: valCol.label,
+              mensagem: "Fora da faixa (min: "
+                + min + " / max: " + max + ")", level: 'alert'
+            });
+          }
+        }
+      }
+    }
+
+
+
+    /* se tiver erro, mostra modal */
+    if (err.length > 0) {
+      let parm = { instrumento: this.instrumento, erros: err };
+      let errModal = this.modalController.create(InstrumentoDetailLeituraErroPage, parm);
+      errModal.onDidDismiss(data => this.modalErrorClose(data));
+      errModal.present();
+    }
+    else {
+      this.sendToDataBase();
+    }
+  }
+
+  modalErrorClose(data) {
+    console.log('InstrumentoDetailLeituraLeituraPage', data);
+    if (data.option == "save") {
+      this.sendToDataBase();
+    }
+  }
+
+  sendToDataBase() {
+    console.log('VAMOS SALVAR');
+  }
+
 }

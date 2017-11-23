@@ -14,6 +14,44 @@
 // To declare rules for a specific mode, create a child rule
 // for the .md, .ios, or .wp mode classes. The mode class is
 // automatically applied to the <body> element in the app.
+
+/* configuração das tabs de rodapé */
+ion-tabs>div.tabbar{
+    height: 40px !important;
+    background-color: map-get($colors, primary) !important;
+}
+
+.barcodeBtn{
+    padding: 20px 13px !important;
+}
+
+/* Action Sheet (select bottom-up) */
+ion-action-sheet>div>div>div:nth-child(1){
+    padding-top: 0px !important;
+}
+.action-sheet-title{
+    background-color: map-get($colors, secondary) !important;
+}
+ion-action-sheet>div>div>div.action-sheet-group.action-sheet-group-cancel>button{
+    min-height: 30px;
+    color: map-get($colors, light) !important;
+    font-weight: 700px;
+    background-color: map-get($colors, secondary) !important;
+}
+
+
+ion-select{
+    font-size: 14px !important;
+}
+button.btnInstrumento *{
+    font-size: 14px !important;
+    height: 30px !important;
+}
+#btnInstrumento > div.item-inner > div > ion-label{
+    margin: 5px 0px !important;
+}
+
+/* Botão de fechamento de campanha */
 .closeFilesFooter {
     height: 95px !important;
 }
@@ -21,61 +59,23 @@
     height: 80px !important;
     text-align: center;
 }
-.listHeight{
-    height: 50px !important;
-}
-.head{
-    height: 50px !important;
-    background-color: map-get($colors, primary); 
-}
-.head>.item-inner{
-    border-bottom: none !important;
-}
-.head>ion-title>div.toolbar-title, .head>div.item-inner>ion-title>div.toolbar-title{
-    color: map-get($colors, light) !important;
-    font-size: 16px !important;
-    font-weight: 600 !important;
-    text-align: left;
-}
-.subHead{
-    background-color: map-get($colors, secondary); 
-}
-.subHead>ion-title>div.toolbar-title, .subHead>div.item-inner>ion-title>div.toolbar-title{
-    color: map-get($colors, dark) !important;
-    font-size: 14px !important;
-    font-weight: 500 !important;
-}
-.detail {
-    height: 50px !important;
-}
-.detail>.item-inner{
-    border-bottom: none !important;
-}
-.detail>ion-title>div.toolbar-title, .detail>div.item-inner>ion-title>div.toolbar-title{
-    color: map-get($colors, dark)!important;
-    font-size: 16px !important;
-    font-weight: 400 !important;
-    text-align: left;
-}
-.gridTitle{
-    color: map-get($colors, dark) !important;
-    font-size: 14px !important;
-    font-weight: 700 !important;   
-    text-align: right !important;
-    border: 1px solid map-get($colors, dark) !important;
-}
-.gridData{
-    border: 1px solid map-get($colors, dark) !important;
-    text-align: right !important;
-}
 
 /* SearchBar */
 /* subtitulo */
+ion-content.hasSearchBar > div.scroll-content{
+    margin-top: 128px !important;
+}
+
 div.stSearch{
     font-size: 16px !important;
     font-weight: 700 !important;   
     color: map-get($colors, light) !important;
     text-align: center;
+}
+ion-toolbar.searchBar{
+    height: 88px !important;
+    min-height: 88px !important;
+    max-height: 88px !important;
 }
 ion-toolbar.searchBar>div>ion-searchbar *{
     font-size: 14px !important;
@@ -94,19 +94,38 @@ ion-toolbar.searchBar > ion-buttons > button{
     border: 1px solid map-get($colors, light);
 }
 
-table.tbSearch{
-    width: 100% !important;
+table.tbSearch, table.leituras12{
+    width: 90% !important;
+    margin: 0px auto;
+
 }
-table.tbSearch>tbody *{
-    font-size: 15px !important;
+table.tbSearch>tbody *, table.leituras12 *{
+    font-size: 14px !important;
     color: map-get($colors, dark) !important;
 }
+table.leituras12>tbody>tr>td{
+    border-bottom: 1px solid map-get($colors, editable) !important;
+}
+table.leituras12>tbody>tr>td>button{
+    margin: 1px 2px;
+}
+table.leituras12>tbody>tr>td>button>span{
+    background-color: map-get($colors, primary) !important;
+}
+table.leituras12>tbody>tr>td>button>span>ion-icon{
+    color: map-get($colors, light) !important;
+}
+
+table.leituras12>tbody>tr>td>ion-badge{
+    font-size: 14px !important;
+    color: map-get($colors, light) !important;
+}
 table.tbSearch>tbody>tr>th{
-    font-size: 16px !important;
+    font-size: 14px !important;
     font-weight: 700 !important;   
     background-color: map-get($colors, secondary) !important;
     color: map-get($colors, light) !important;
-    padding: 5px 10px;
+    padding: 2px 10px;
     text-align: left !important;
     text-transform: none;
     border-top: 1px solid map-get($colors, editable) !important;
@@ -115,9 +134,10 @@ table.tbSearch>tbody>tr>th{
 table.tbSearch>tbody>tr>th.instr, table.tbSearch>tbody>tr>td.instr{
     width: 150px !important;
 }
-table.tbSearch>tbody>tr>td *{
+table.tbSearch>tbody>tr>td>button{
     font-weight: 400 !important;   
-    padding: 10px 10px;
+    padding: 2px 10px;
+    height: 25px;
     border-bottom: 1px solid map-get($colors, editable) !important;
 }
 table.tbSearch>tbody>tr>td>button *{
@@ -165,4 +185,83 @@ div.errTable>div>div.labelErr>span.errTitle{
 div.errTable>div>div.labelErr>span.errMsg{
     font-weight: 400 !important; 
     padding-left: 20px;
+}
+
+
+ion-item.subtitle{
+    min-height: 28px !important;
+    height: 28px !important;
+}
+ion-item.subtitle>ion-title{
+    margin: 4px 0px !important;
+}
+ion-item.subtitle>ion-title>div{
+    font-size: 14px;
+    background-color: map-get($colors, secondary);
+    color: map-get($colors, dark) !important;
+}
+ion-item.subtitle>ion-buttons,
+ion-item.subtitle>div.item-inner>ion-buttons{
+    margin: 0px !important;
+    height: 28px !important;
+}
+ion-item.subtitle>ion-buttons>button,
+ion-item.subtitle>div.item-inner>ion-buttons>button{
+    margin: 0px !important;
+    vertical-align: top !important;
+}    
+ion-item.subtitle>div.item-inner>ion-buttons>ion-badge{
+    margin: 0px;
+    padding-top: 7px;
+}    
+
+ion-item.subtitle>div.item-inner{
+    border: none !important;
+}
+
+
+/* Página de instrumentos */
+.lblDiv{
+    font-size: 14px !important;
+    font-weight: 700 !important; 
+    text-align: right;
+    padding-right: 5px;
+}
+.dataDiv{
+    border-bottom: 1px solid  map-get($colors, editable);
+    font-size: 14px !important;
+}
+
+/* Modal */
+ion-navbar.modalTitle{
+    font-size: 16px;
+    height: 40px;
+}
+ion-navbar.modalTitle>div.toolbar-content.toolbar-content-md > ion-item{
+    background-color: transparent;
+    font-size: 16px;
+    
+}
+ion-navbar.modalTitle>div.toolbar-content.toolbar-content-md > ion-item > div.item-inner > ion-title > div{
+    font-size: 16px;
+}
+
+/* detalhe leitura -- aproveita style de leituras12 */
+table.leituras12>tbody>tr>td.lbl,
+table.leituras12>tbody>tr>td.lblNmbr{
+    text-align: right;
+    padding: 5px;
+    font-weight: 700;
+}
+table.leituras12>tbody>tr>td.data{
+    border-bottom: 1px solid  map-get($colors, editable);
+    font-size: 14px !important;
+}
+table.leituras12>tbody>tr>td.dataNmbr{
+    background-color: map-get($colors, editable);
+    border-bottom: 1px solid  map-get($colors, dark) !important;
+    border-right: 1px solid  map-get($colors, dark) !important;
+    font-size: 14px !important;
+    text-align: right;
+    padding-right: 10px;
 }

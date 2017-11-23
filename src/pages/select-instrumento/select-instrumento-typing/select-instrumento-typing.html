@@ -3,7 +3,6 @@
   <ion-navbar> </ion-navbar>
 </ion-header>
 <!-- navbar precisa ficar para deslocar o conteúdo para a posição correta -->
-
 <ion-content>
   <ion-card class='bordered center'>
     <ion-card-header>
@@ -18,7 +17,7 @@
           </ion-option>
         </ion-select>
       </ion-item>
-      <button ion-item outline full [disabled]='(tipoSelected == undefined ? true : false)' (click)='selectInstrumento()'>
+      <button ion-item outline full  id='btnInstrumento' [disabled]='(tipoSelected == undefined ? true : false)' (click)='selectInstrumento()'>
         Instrumento
         <ion-icon name='arrow-dropright' item-end></ion-icon>
       </button>
@@ -26,9 +25,6 @@
   </ion-card>
 
   <ion-card class="center">
-    <ion-card-header>
-      Alterne para o modo de código de barras
-      <br/>no menu abaixo.
-    </ion-card-header>
+      Alterne para o modo de código de barras no menu abaixo.
   </ion-card>
 </ion-content>

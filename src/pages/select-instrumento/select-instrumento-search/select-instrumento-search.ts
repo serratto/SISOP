@@ -3,7 +3,7 @@ import {
   IonicPage, NavController, NavParams,
   LoadingController, AlertController
 } from 'ionic-angular';
-import { SISOPGlobals, StorageManager } from "../../shared/shared";
+import { SISOPGlobals, StorageManager } from "../../../shared/shared";
 import _ from 'lodash';
 
 @IonicPage()
