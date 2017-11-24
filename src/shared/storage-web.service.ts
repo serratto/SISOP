@@ -13,6 +13,7 @@ export class StorageWeb implements ISQLProvider {
         this._db = win.openDatabase(this._globals.UserDBName, '1.0', 'database', 5 * 1024 * 1024);
     }
 
+
     executeQuery(query: string, parms?: any[]): Promise<any> {
         return new Promise((resolve, reject) => {
             this.query(query, parms)

@@ -118,6 +118,7 @@ export class LeituraHomePage {
     return new Promise((resolve, reject) => {
       this.stMan.getTemplateLeituraByTipoInstrumento(this.parms.instrumento.tipoInstrumentoId)
         .then((templLeit) => {
+          console.log('templateleitura',templLeit.res.rows);
           for (var slCount = 0; slCount < templLeit.res.rows.length; slCount++) {
             var tl = templLeit.res.rows[slCount];
             this.parms.templatesLeitura.push(tl);

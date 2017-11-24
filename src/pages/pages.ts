@@ -11,6 +11,7 @@ export * from './leitura/leitura-campanha/leitura-campanha';
 export * from './leitura/leitura-instrumento/leitura-instrumento';
 export * from './leitura/leitura-leitura/leitura-leitura';
 export * from './leitura/leitura-leitura-multiponto/leitura-leitura-multiponto';
+export * from './leitura/leitura-leitura-erro/leitura-leitura-erro';
 export * from './leitura/leitura-ultimas12/leitura-ultimas12';
 export * from './leitura/leitura-ultimas12-detalhe/leitura-ultimas12-detalhe';
 

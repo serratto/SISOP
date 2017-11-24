@@ -1,0 +1,35 @@
+<ion-header>
+  <ion-navbar color='primary' class='modalTitle'>
+    <ion-item>
+      <ion-title>Inconsistências: {{instrumento.modelo}}-{{instrumento.numero}}</ion-title>
+    </ion-item>
+  </ion-navbar>
+  <ion-item no-padding color="secondary" class='subtitle'>
+    <ion-title item-start>Descrição dos erros</ion-title>
+  </ion-item>
+</ion-header>
+<ion-content>
+  <div class='errTable' width='100%'>
+    <div *ngFor='let erro of erros'>
+      <div class='labelErr {{erro.level}}'>
+        <span class='errTitle'>{{erro.coluna}}:</span>
+        <br/>
+        <span class='errMsg'>{{erro.mensagem}}</span>
+      </div>
+    </div>
+  </div>
+</ion-content>
+<ion-footer>
+  <ion-item>
+    <ion-buttons start>
+      <button item-start ion-button color="danger" (click)="cancel()">
+        Cancelar
+      </button>
+    </ion-buttons>
+    <ion-buttons item-end>
+      <button ion-button (click)="save()" [disabled]="hasOnlyAlert()?'':'disabled'">
+        Salvar
+      </button>
+    </ion-buttons>
+  </ion-item>
+</ion-footer>

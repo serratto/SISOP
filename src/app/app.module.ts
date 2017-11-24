@@ -26,7 +26,7 @@ import {
 import {
   LeituraHomePage, LeituraLeituraPage, LeituraLeituraMultipontoPage,
   LeituraCampanhaPage, LeituraUltimas12Page, LeituraUltimas12DetalhePage,
-  LeituraInstrumentoPage
+  LeituraInstrumentoPage, LeituraLeituraErroPage
 } from '../pages/pages';
 /* transition */
 import {
@@ -57,7 +57,7 @@ import { StorageManager, StorageSql, StorageWeb } from '../shared/shared';
     LeituraLeituraPage, LeituraLeituraMultipontoPage,
     LeituraCampanhaPage,
     LeituraUltimas12Page, LeituraUltimas12DetalhePage,
-    LeituraInstrumentoPage,
+    LeituraInstrumentoPage, LeituraLeituraErroPage,
 
     /* transition */
     InstrumentoDetailHomePage, InstrumentoDetailDetailPage,
@@ -86,7 +86,7 @@ import { StorageManager, StorageSql, StorageWeb } from '../shared/shared';
     LeituraLeituraPage, LeituraLeituraMultipontoPage,
     LeituraCampanhaPage,
     LeituraUltimas12Page, LeituraUltimas12DetalhePage,
-    LeituraInstrumentoPage,
+    LeituraInstrumentoPage, LeituraLeituraErroPage,
     /* transition */
     InstrumentoDetailHomePage, InstrumentoDetailDetailPage,
     InstrumentoDetailHistoricoPage,

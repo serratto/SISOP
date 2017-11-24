@@ -1,4 +1,6 @@
 import { Injectable } from '@angular/core';
+import { Events } from 'ionic-angular';
+
 import {
     StorageSql, StorageWeb,
     StoragePrepareSchema, StorageLoadData,
@@ -11,6 +13,7 @@ import _ from 'lodash';
 
 @Injectable()
 export class StorageManager {
+    private events: Events;
 
     private _web: boolean;
     private _sql: ISQLProvider;
@@ -18,6 +21,8 @@ export class StorageManager {
     private _prepareSchema: StoragePrepareSchema;
     private _loadData: StorageLoadData;
     constructor() {
+        this.events = new Events();
+
         this._processFile = new ProcessFile();
         this._prepareSchema = new StoragePrepareSchema();
         this._loadData = new StorageLoadData();
@@ -102,27 +107,51 @@ export class StorageManager {
     }
 
     public clearMobileData() {
-        var tabs = ['FileManager',
-            'Estados',
-            'TemplateLeitura',
-            'VariavelLeituraSituacao',
-            'SituacaoLeitura',
-            'TipoInstrumento',
-            'TipoInstrumentoPorInstalacao',
-            'Modelos',
-            'EstruturaLocalizacao',
-            'Secao',
-            'Elemento',
-            'Instrumento',
-            'LabelLeitura',
-            'MudancaEstado',
-            'ModeloInstrumentoTemplateLeitura',
-            'kvPairTable'
-        ];
-        for (var index = 0; index < tabs.length; index++) {
-            let command = 'delete from ' + tabs[index];
-            this._sql.executeQuery(command, []).then().catch();
-        }
+
+        Promise.all([
+            this._sql.executeNonQuery('drop table FileManager'),
+            this._sql.executeNonQuery('drop table Estados'),
+            this._sql.executeNonQuery('drop table TemplateLeitura'),
+            this._sql.executeNonQuery('drop table VariavelLeituraSituacao'),
+            this._sql.executeNonQuery('drop table SituacaoLeitura'),
+            this._sql.executeNonQuery('drop table TipoInstrumento'),
+            this._sql.executeNonQuery('drop table TipoInstrumentoPorInstalacao'),
+            this._sql.executeNonQuery('drop table Modelos'),
+            this._sql.executeNonQuery('drop table EstruturaLocalizacao'),
+            this._sql.executeNonQuery('drop table Secao'),
+            this._sql.executeNonQuery('drop table Elemento'),
+            this._sql.executeNonQuery('drop table Instrumento'),
+            this._sql.executeNonQuery('drop table LabelLeitura'),
+            this._sql.executeNonQuery('drop table MudancaEstado'),
+            this._sql.executeNonQuery('drop table ModeloInstrumentoTemplateLeitura'),
+            this._sql.executeNonQuery('drop table kvPairTable'),
+            this._sql.executeNonQuery('drop table CampaignStatistics')
+        ]).then((ok) => {
+            this.initializeKV();
+            this._prepareSchema.prepareSchema();
+        }).catch(err=>console.log(err));
+        // var tabs = ['FileManager',
+        //     'Estados',
+        //     'TemplateLeitura',
+        //     'VariavelLeituraSituacao',
+        //     'SituacaoLeitura',
+        //     'TipoInstrumento',
+        //     'TipoInstrumentoPorInstalacao',
+        //     'Modelos',
+        //     'EstruturaLocalizacao',
+        //     'Secao',
+        //     'Elemento',
+        //     'Instrumento',
+        //     'LabelLeitura',
+        //     'MudancaEstado',
+        //     'ModeloInstrumentoTemplateLeitura',
+        //     'kvPairTable',
+        //     'CampaignStatistics'
+        // ];
+        // for (var index = 0; index < tabs.length; index++) {
+        //     let command = 'drop table ' + tabs[index];
+        //     this._sql.executeNonQuery(command).then().catch();
+        // }
     }
 
     private processFile(uheFile: UHEFile): Promise<any> {

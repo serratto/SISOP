@@ -19,7 +19,7 @@ export class StorageSql implements ISQLProvider {
             });
     }
 
-    executeQuery(query: string, parms?: any[]): Promise<any> {
+     executeQuery(query: string, parms?: any[]): Promise<any> {
         var promise = new Promise((resolve, reject) => {
             this.sqlite.create({ name: this._globals.UserDBName, location: 'default' })
                 .then((db: SQLiteObject) => {

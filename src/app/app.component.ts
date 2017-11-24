@@ -78,6 +78,7 @@ export class MyApp {
   }
 
   closeFilesToSISOP() {
+    this.nav.popToRoot();
     this.storageManager.clearMobileData();
   }
 }
