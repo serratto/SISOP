@@ -7,5 +7,13 @@
   </ion-item>
 </ion-header>
 <ion-content padding>
-
+  <table class='tbSearch'>
+    <tr *ngFor="let leit of leiturasCampanha" class='tbSearch'>
+      <td class='instr'>
+        <button ion-button (click)='selectLeitura($event, leit)' ion-button outline full clear>
+          {{leit.DataLeitura | date:'dd/MM/yyyy HH:mm'}}
+        </button>
+      </td>
+    </tr>
+  </table>
 </ion-content>

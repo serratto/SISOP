@@ -5,6 +5,12 @@
   <ion-item no-padding color="secondary" class='subtitle'>
     <ion-title item-start>{{novaOuEdicao}}</ion-title>
     <ion-buttons item-end>
+      <button ion-button item-end icon-only small (click)="delete()" [disabled]="hasChanges()?'':'disabled'" color='danger'>
+        <ion-icon name='trash'></ion-icon>
+      </button>
+      <button ion-button item-end small (click)="nova()" [disabled]="hasChanges()?'':'disabled'" color='danger'>
+        <ion-icon name='document'></ion-icon>
+      </button>
       <button ion-button item-end small (click)="save()" [disabled]="hasChanges()?'':'disabled'" color='danger'>
         Salvar
       </button>
@@ -15,7 +21,8 @@
       <td class='tdLblBlk' width='100px'>Data leitura:</td>
       <td class='tdValLeitura'>
         <ion-item class='button'>
-          <ion-datetime displayFormat='DD/MM/YYYY HH:mm' pickerFormat='DD/MM/YYYY HH:mm' cancelText="Cancelar" doneText="Ok" [(ngModel)]="model.dataLeitura"></ion-datetime>
+          <ion-datetime displayFormat='DD/MM/YYYY HH:mm' pickerFormat='DD/MM/YYYY HH:mm' [disabled]="blockDate" cancelText="Cancelar"
+            doneText="Ok" [(ngModel)]="model.dataLeitura"></ion-datetime>
         </ion-item>
       </td>
     </tr>
@@ -48,23 +55,23 @@
 <ion-content>
   <!-- SinglePoint -->
   <!--temLeitura-->
-    <table class='dataTable' [ngClass]='mostraLeitura()'>
-      <tr *ngFor="let col of model.columns">
-        <td class='tdLbl'>{{col.label}}:</td>
-        <td class='tdValLeitura'>
-          <input type='text' [(ngModel)]="col.valor" (ngModelChange)="sanitizaNro(col.templateLeituraId, col.valor)" class='numero'>
-        </td>
-        <td class='tdUmed'>{{col.umed}}</td>
-      </tr>
-    </table>
-    <br>
-    <div [ngClass]='mostraLeitura()' class='errTable' width='100%'>
-      <div *ngFor='let consist of consistencia'>
-        <div class='labelErr {{consist.level}}'>
-          <span class='errTitle'>{{consist.coluna}}:</span>
-          <br/>
-          <span class='errMsg'>{{consist.mensagem}}</span>
-        </div>
+  <table class='dataTable' [ngClass]='mostraLeitura()'>
+    <tr *ngFor="let col of model.columns">
+      <td class='tdLbl'>{{col.label}}:</td>
+      <td class='tdValLeitura'>
+        <input type='text' [(ngModel)]="col.valor" (ngModelChange)="sanitizaNro(col.templateLeituraId, col.valor)" class='numero'>
+      </td>
+      <td class='tdUmed'>{{col.umed}}</td>
+    </tr>
+  </table>
+  <br>
+  <div [ngClass]='mostraLeitura()' class='errTable' width='100%'>
+    <div *ngFor='let consist of consistencia'>
+      <div class='labelErr {{consist.level}}'>
+        <span class='errTitle'>{{consist.coluna}}:</span>
+        <br/>
+        <span class='errMsg'>{{consist.mensagem}}</span>
       </div>
     </div>
+  </div>
 </ion-content>

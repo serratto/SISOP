@@ -292,6 +292,7 @@ export class StorageLoadData {
         });
     }
     private carregaInstrumento(jsonData: object): Promise<any> {
+        var prom = [];
         for (var index = 0; index < jsonData['Instrumentos'].length; index++) {
             let item = jsonData['Instrumentos'][index];
 
@@ -317,14 +318,14 @@ export class StorageLoadData {
             args.push(item.Estaca);
             args.push(item.Afastamento);
 
-            this._sql.executeQuery(command, args)
-                .then(() => Promise.resolve())
-                .catch((err) => Promise.reject(err));
+            prom.push(this._sql.executeQuery(command, args)
+                .then(() => { Promise.resolve() })
+                .catch((err) => Promise.reject(err)));
         }
-
-        return Promise.resolve();
+        return Promise.all(prom);
     }
     private carregaLabelLeitura(jsonData: object): Promise<any> {
+        var prom = [];
         for (var index = 0; index < jsonData['Instrumentos'].length; index++) {
             let instrumento = jsonData['Instrumentos'][index];
             for (var index2 = 0; index2 < instrumento['LabelLeitura'].length; index2++) {
@@ -337,11 +338,12 @@ export class StorageLoadData {
                 args.push(instrumento.Id);
                 args.push(item.Seq);
                 args.push(item.Valor);
-                this._sql.executeQuery(command, args)
-                    .then(() => Promise.resolve())
-                    .catch((err) => Promise.reject(err));
+
+                prom.push(this._sql.executeQuery(command, args)
+                    .then(() => { Promise.resolve() })
+                    .catch((err) => Promise.reject(err)));
             }
         }
-        return Promise.resolve();
+        return Promise.all(prom);
     }
 }

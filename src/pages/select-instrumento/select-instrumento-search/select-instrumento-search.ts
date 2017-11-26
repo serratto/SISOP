@@ -34,10 +34,12 @@ export class SelectInstrumentoSearchPage {
       content: 'carregando os instrumento...'
     });
     this.instrumentos = [];
+    this.instrFilter = [];
     this.stMan.getInstrumentosByTipoUHE(this.tipoSelected.id, this.usinaId)
       .then((tipos) => {
         this.instrumentos = tipos.res.rows;
         this.instrFilter = tipos.res.rows;
+        loader.dismiss();
       })
       .catch((err) => {
         let alert = this.alert.create({

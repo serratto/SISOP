@@ -1,8 +1,8 @@
 import { Component } from '@angular/core';
-import { IonicPage, NavController, NavParams, ModalController } from 'ionic-angular';
+import { IonicPage, NavController, NavParams, ModalController, AlertController } from 'ionic-angular';
 import { Events } from 'ionic-angular';
 import { LeituraLeituraErroPage } from "../../pages";
-import { SISOPGlobals } from "../../../shared/shared";
+import { SISOPGlobals, StorageManager } from "../../../shared/shared";
 
 import _ from 'lodash';
 
@@ -15,6 +15,7 @@ export class LeituraLeituraPage {
   _globals: SISOPGlobals;
 
   novaOuEdicao = "Nova Leitura";
+  blockDate: boolean = false;
   mustsave: boolean = true;
   temLeitura: boolean = false;
   consistencia = [];
@@ -25,12 +26,14 @@ export class LeituraLeituraPage {
 
   /* Model */
 
-  compare = { dataLeitura: '', columns: [], situacao: 0, nivelDagua: '' };
-  model = { dataLeitura: '', columns: [], situacao: 0, nivelDagua: '' };
+  compare = { dataLeitura: '', columns: [], situacao: 0, nivelDagua: '', observacao: '' };
+  model = { dataLeitura: '', columns: [], situacao: 0, nivelDagua: '', observacao: '' };
   situacoesLeitura = [];
 
   constructor(public navCtrl: NavController, public navParams: NavParams,
-    private events: Events, private modalController: ModalController) {
+    private events: Events, private modalController: ModalController,
+    private stMan: StorageManager,
+    private alert: AlertController) {
     this._globals = new SISOPGlobals();
     this.parms = this.navParams.data;
     /* inicializa o comparer */
@@ -44,6 +47,45 @@ export class LeituraLeituraPage {
   }
 
   ionViewDidEnter() {
+    if (SISOPGlobals.leituraSelecionada) {
+      this.novaOuEdicao = "Edição da Leitura";
+      this.blockDate = true;
+      var selected = SISOPGlobals.leituraSelecionada;
+      this.model.dataLeitura = selected.leitura.DataLeitura;
+      this.model.situacao = selected.leitura.SituacaoLeitura;
+      this.model.nivelDagua = selected.leitura.NivelDagua;
+      this.model.observacao = selected.leitura.Observacao;
+      this.restringeSituacoesPossiveis();
+      this.changeSituacao();
+
+      for (let index = 0; index < selected.valores.length; index++) {
+        var valor = selected.valores[index];
+        /* Encotra coluna no model para setar o valor */
+        var col = _.find(this.model.columns, function (c) {
+          return c.templateLeituraId == valor.TemplateLeituraId;
+        });
+        if (col) {
+          col.valor = valor.Valor;
+        }
+      }
+    }
+    // else {
+    //   this.nova();
+    // }
+    SISOPGlobals.leituraSelecionada = null;
+  }
+
+  nova() {
+    this.novaOuEdicao = "Nova Leitura";
+    this.compare = { dataLeitura: '', columns: [], situacao: 0, nivelDagua: '', observacao: '' };
+    this.model = { dataLeitura: '', columns: [], situacao: 0, nivelDagua: '', observacao: '' };
+    var data = this._globals.currentDateDime()
+    this.model.dataLeitura = data;
+    this.compare.dataLeitura = data;
+    this.blockDate = false;
+
+    this.restringeSituacoesPossiveis();
+    this.changeSituacao();
   }
 
   sanitizaNro(origem, value) {
@@ -252,8 +294,64 @@ export class LeituraLeituraPage {
     }
   }
 
+  delete() {
+    let alert = this.alert.create({
+      title: 'Atenção',
+      cssClass: 'alert-danger',
+      message: 'Deseja excluir esta leitura?',
+      buttons: [{
+        text: 'Sim',
+        handler: () => {
+          this.saveDelete();
+          this.nova();
+        }
+      }, {
+        text: 'Cancelar',
+        handler: () => { }
+      }]
+    });
+    alert.present();
+  }
+
+  saveDelete() {
+    var leitura = {
+      InstrumentoId: this.parms.instrumento.id,
+      DataLeitura: this.model.dataLeitura,
+    }
+    var prom = []
+    prom.push(this.stMan.deleteLeitura(leitura).catch((err) => Promise.reject(err)));
+    prom.push(this.stMan.deleteLeituraValor(leitura).catch((err) => Promise.reject(err)));
+    Promise.all(prom).then(() => alert('deletou')).catch((err) => console.log(err));
+
+  }
+
   sendToDataBase() {
-    console.log('VAMOS SALVAR');
-    console.log(this.model);
+    var leitura = {
+      InstrumentoId: this.parms.instrumento.id,
+      DataLeitura: this.model.dataLeitura,
+      NivelDagua: this.model.nivelDagua,
+      SituacaoLeitura: this.model.situacao,
+      Observacao: this.model.observacao,
+      Barcode: this.parms.barcode
+    }
+    var prom = []
+    /* Deleta primeiro, pode ter tido mudança de template e variáveis  */
+    this.stMan.deleteLeituraValor(leitura).then(() => {
+      prom.push(this.stMan.insertLeitura(leitura).catch((err) => Promise.reject(err)));
+
+      for (let index = 0; index < this.model.columns.length; index++) {
+        var vals = this.model.columns[index];
+
+        var lv = {
+          InstrumentoId: this.parms.instrumento.id,
+          DataLeitura: this.model.dataLeitura,
+          TemplateLeituraId: vals.templateLeituraId,
+          Sequencial: 0,
+          Valor: vals.valor
+        }
+        prom.push(this.stMan.insertLeituraValor(lv).catch((err) => Promise.reject(err)));
+      }
+      Promise.all(prom).then(() => alert('salvou')).catch((err) => console.log(err));
+    });
   }
 }

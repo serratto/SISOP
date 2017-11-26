@@ -50,7 +50,6 @@ export class StorageManager {
             this._sql.executeQuery(command, arg)
                 .then((data) => {
                     if (data.res.rows.length > 0) {
-
                         resolve(JSON.parse(data.res.rows[0].value));
                     }
                     resolve(null);
@@ -63,6 +62,9 @@ export class StorageManager {
     }
 
     setCurrentUHE(selected: UHEFile): Promise<any> {
+        if (!selected) {
+            return this.setUHENasPreferencias(selected);
+        };
         return new Promise((resolve, reject) => {
             /* Processa parse do arquivo */
             this.processFile(selected)
@@ -96,62 +98,55 @@ export class StorageManager {
 
     private setUHENasPreferencias(selected: UHEFile): Promise<any> {
         return new Promise<any>((resolve, reject) => {
-            let command = 'insert or replace into kvPairTable (key, value) values (?, ?)';
-            let args = ['currentuhe', JSON.stringify(selected)];
-            this._sql.executeQuery(command, args)
-                .then(data => { resolve(); })
-                .catch(err => {
-                    reject(err);
-                });
+            if (selected) {
+                let command = 'insert or replace into kvPairTable (key, value) values (?, ?)';
+                let args = ['currentuhe', JSON.stringify(selected)];
+                this._sql.executeQuery(command, args)
+                    .then(data => { resolve(); })
+                    .catch(err => {
+                        reject(err);
+                    });
+            } else {
+                let command = 'delete from kvPairTable where key = ?';
+                let args = ['currentuhe', JSON.stringify(selected)];
+                this._sql.executeQuery(command, args)
+                    .then(data => { resolve(); })
+                    .catch(err => {
+                        reject(err);
+                    });
+
+            }
         });
     }
 
-    public clearMobileData() {
+    public clearMobileData(): Promise<any> {
 
-        Promise.all([
-            this._sql.executeNonQuery('drop table FileManager'),
-            this._sql.executeNonQuery('drop table Estados'),
-            this._sql.executeNonQuery('drop table TemplateLeitura'),
-            this._sql.executeNonQuery('drop table VariavelLeituraSituacao'),
-            this._sql.executeNonQuery('drop table SituacaoLeitura'),
-            this._sql.executeNonQuery('drop table TipoInstrumento'),
-            this._sql.executeNonQuery('drop table TipoInstrumentoPorInstalacao'),
-            this._sql.executeNonQuery('drop table Modelos'),
-            this._sql.executeNonQuery('drop table EstruturaLocalizacao'),
-            this._sql.executeNonQuery('drop table Secao'),
-            this._sql.executeNonQuery('drop table Elemento'),
-            this._sql.executeNonQuery('drop table Instrumento'),
-            this._sql.executeNonQuery('drop table LabelLeitura'),
-            this._sql.executeNonQuery('drop table MudancaEstado'),
-            this._sql.executeNonQuery('drop table ModeloInstrumentoTemplateLeitura'),
-            this._sql.executeNonQuery('drop table kvPairTable'),
-            this._sql.executeNonQuery('drop table CampaignStatistics')
-        ]).then((ok) => {
-            this.initializeKV();
-            this._prepareSchema.prepareSchema();
-        }).catch(err=>console.log(err));
-        // var tabs = ['FileManager',
-        //     'Estados',
-        //     'TemplateLeitura',
-        //     'VariavelLeituraSituacao',
-        //     'SituacaoLeitura',
-        //     'TipoInstrumento',
-        //     'TipoInstrumentoPorInstalacao',
-        //     'Modelos',
-        //     'EstruturaLocalizacao',
-        //     'Secao',
-        //     'Elemento',
-        //     'Instrumento',
-        //     'LabelLeitura',
-        //     'MudancaEstado',
-        //     'ModeloInstrumentoTemplateLeitura',
-        //     'kvPairTable',
-        //     'CampaignStatistics'
-        // ];
-        // for (var index = 0; index < tabs.length; index++) {
-        //     let command = 'drop table ' + tabs[index];
-        //     this._sql.executeNonQuery(command).then().catch();
-        // }
+        this._sql.executeNonQuery('delete from kvPairTable');
+        var prom = new Promise((resolve, reject) => {
+            Promise.all([
+                this._sql.executeNonQuery('drop table FileManager'),
+                this._sql.executeNonQuery('drop table Estados'),
+                this._sql.executeNonQuery('drop table TemplateLeitura'),
+                this._sql.executeNonQuery('drop table VariavelLeituraSituacao'),
+                this._sql.executeNonQuery('drop table SituacaoLeitura'),
+                this._sql.executeNonQuery('drop table TipoInstrumento'),
+                this._sql.executeNonQuery('drop table TipoInstrumentoPorInstalacao'),
+                this._sql.executeNonQuery('drop table Modelos'),
+                this._sql.executeNonQuery('drop table EstruturaLocalizacao'),
+                this._sql.executeNonQuery('drop table Secao'),
+                this._sql.executeNonQuery('drop table Elemento'),
+                this._sql.executeNonQuery('drop table Instrumento'),
+                this._sql.executeNonQuery('drop table LabelLeitura'),
+                this._sql.executeNonQuery('drop table MudancaEstado'),
+                this._sql.executeNonQuery('drop table ModeloInstrumentoTemplateLeitura'),
+                this._sql.executeNonQuery('drop table CampaignStatistics'),
+                this._sql.executeNonQuery('drop table Leitura'),
+                this._sql.executeNonQuery('drop table LeituraValor')
+            ])
+                .then((ok) => resolve(ok))
+                .catch(err => reject(err));
+        });
+        return prom;
     }
 
     private processFile(uheFile: UHEFile): Promise<any> {
@@ -257,12 +252,18 @@ export class StorageManager {
             ", ti.multiponto as 'multiponto' " +
             ", ti.niveldagua as 'niveldagua' " +
             ", ti.id as 'tipoInstrumentoId' " +
+            ", count(l.instrumentoid) as 'contaleitura' " +
             " from instrumento i " +
             " join modelos m on i.modeloId = m.id " +
             " join estados e on i.estadoId = e.id " +
             " join tipoinstrumento ti on ti.id = i.tipoinstrumentoid" +
+            " left outer join leitura l on l.InstrumentoId = i.id" +
             " where i.usinaid = ? and tipoinstrumentoid = ?" +
-            " order by i.numero "
+            " group by  " +
+            "i.id, m.sigla, substr('0000'|| i.numero,-4, 4) " +
+            ", e.nome, i.estadoid, m.id, ti.multiponto " +
+            ", ti.niveldagua, ti.id"
+            " order by i.numero " 
             ;
         let args = [];
         args.push(usinaId);
@@ -395,6 +396,117 @@ export class StorageManager {
             "   and modeloinstrumentoid = ? ";
         args.push(tipoInstrumentoId);
         args.push(modeloInstrumentoId);
+
+        return new Promise<any>((resolve, reject) => {
+            this._sql.executeQuery(command, args)
+                .then((data) => resolve(data))
+                .catch((err) => reject(err));
+        });
+    }
+
+    public insertLeitura(leitura: any): Promise<any> {
+        var args = [];
+        let command = 'insert or replace into Leitura ' +
+            '( DataLeitura, NivelDagua, ' +
+            '  SituacaoLeitura, InstrumentoId, ' +
+            '  Observacao, Barcode)'
+            + ' values (?, ?, ?, ?, ?, ?)';
+
+        args.push(leitura.DataLeitura);
+        args.push(leitura.NivelDagua);
+        args.push(leitura.SituacaoLeitura);
+        args.push(leitura.InstrumentoId);
+        args.push(leitura.Observacao);
+        args.push(leitura.Barcode);
+
+        return new Promise<any>((resolve, reject) => {
+            this._sql.executeQuery(command, args)
+                .then(() => { resolve(); })
+                .catch((err) => {
+                    reject(err);
+                    return;
+                });
+        });
+    }
+
+    public deleteLeitura(leitura: any): Promise<any> {
+        var args = [];
+        let command = 'delete from Leitura ' +
+            ' where DataLeitura = ? and InstrumentoId = ?';
+
+        args.push(leitura.DataLeitura);
+        args.push(leitura.InstrumentoId);
+
+        return new Promise<any>((resolve, reject) => {
+            this._sql.executeQuery(command, args)
+                .then(() => { resolve(); })
+                .catch((err) => {
+                    reject(err);
+                    return;
+                });
+        });
+    }
+
+    public deleteLeituraValor(leitura: any): Promise<any> {
+        var args = [];
+        let command = 'delete from LeituraValor ' +
+            ' where DataLeitura = ? and InstrumentoId = ?';
+
+        args.push(leitura.DataLeitura);
+        args.push(leitura.InstrumentoId);
+
+        return new Promise<any>((resolve, reject) => {
+            this._sql.executeQuery(command, args)
+                .then(() => { resolve(); })
+                .catch((err) => {
+                    reject(err);
+                    return;
+                });
+        });
+    }
+
+    public insertLeituraValor(leituraValor: any): Promise<any> {
+        var args = [];
+        let command = 'insert or replace into LeituraValor ' +
+            '( DataLeitura, InstrumentoId, TemplateLeituraId, Sequencial, Valor )'
+            + ' values (?, ?, ?, ?, ?)';
+
+        args.push(leituraValor.DataLeitura);
+        args.push(leituraValor.InstrumentoId);
+        args.push(leituraValor.TemplateLeituraId);
+        args.push(leituraValor.Sequencial);
+        args.push(leituraValor.Valor);
+
+        return new Promise<any>((resolve, reject) => {
+            this._sql.executeQuery(command, args)
+                .then(() => { resolve(); })
+                .catch((err) => {
+                    reject(err);
+                    return;
+                });
+        });
+    }
+
+    public getLeiturasCampanha(instrumentoId): Promise<any> {
+        var args = [];
+        let command = " select dataleitura, niveldagua, situacaoleitura, instrumentoid, observacao, barcode " +
+            " from Leitura " +
+            " where instrumentoid = ? ";
+        args.push(instrumentoId);
+
+        return new Promise<any>((resolve, reject) => {
+            this._sql.executeQuery(command, args)
+                .then((data) => resolve(data))
+                .catch((err) => reject(err));
+        });
+    }
+
+    public getLeituraValoresCampanha(instrumentoId): Promise<any> {
+        var args = [];
+        let command = " select dataleitura, instrumentoid, templateleituraid, sequencial, valor " +
+            " from LeituraValor " +
+            " where instrumentoid = ? ";
+        args.push(instrumentoId);
 
         return new Promise<any>((resolve, reject) => {
             this._sql.executeQuery(command, args)

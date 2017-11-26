@@ -22,6 +22,11 @@
 <ion-content class=''>
   <table class='tbSearch'>
     <tr *ngFor="let instrumento of instrFilter" class='tbSearch'>
+      <td class='badge'>
+          <button ion-button (click)='selectInstrumento($event, instrumento)' ion-button outline full clear>
+              <ion-badge> {{instrumento.contaleitura}} </ion-badge>
+            </button>
+          </td>
       <td class='instr'>
         <button ion-button (click)='selectInstrumento($event, instrumento)' ion-button outline full clear>
           {{instrumento.modelo}}-{{instrumento.numero}}

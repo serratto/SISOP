@@ -17,7 +17,8 @@ export class StorageWeb implements ISQLProvider {
     executeQuery(query: string, parms?: any[]): Promise<any> {
         return new Promise((resolve, reject) => {
             this.query(query, parms)
-                .then((data) => resolve(data))
+                .then((data) => {
+                    resolve(data);})
                 .catch((err) => {
                     console.error('Erro no storage-web executeQuery', query, err);
                     reject(err);

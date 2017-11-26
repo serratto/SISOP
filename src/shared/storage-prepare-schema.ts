@@ -36,7 +36,9 @@ export class StoragePrepareSchema {
                 this.createVariavelLeituraSituacao(),
                 this.createInstrumento(),
                 this.createLabelLeitura(),
-                this.createStateChange()
+                this.createStateChange(),
+                this.createLeitura(),
+                this.createLeituraValor()
                 ])
                 .then(() => { resolve(); })
                 .catch((err) => {
@@ -211,7 +213,7 @@ export class StoragePrepareSchema {
                     return;
                 })
         });
-    } 
+    }
     private createModeloInstrumentoTemplateLeitura(): Promise<any> {
         return new Promise((resolve, reject) => {
             let command = 'CREATE TABLE IF NOT EXISTS ModeloInstrumentoTemplateLeitura ' +
@@ -286,7 +288,7 @@ export class StoragePrepareSchema {
                 })
         });
     }
-      private createStateChange(): Promise<any> {
+    private createStateChange(): Promise<any> {
         return new Promise((resolve, reject) => {
             let command = 'CREATE TABLE IF NOT EXISTS MudancaEstado ' +
                 '(instrumentoId bigint primary key, ' +
@@ -299,5 +301,42 @@ export class StoragePrepareSchema {
                 })
         });
 
+    }
+    private createLeitura(): Promise<any> {
+        return new Promise((resolve, reject) => {
+            let command = 'CREATE TABLE IF NOT EXISTS Leitura ' +
+                '( DataLeitura string ' +
+                ', NivelDagua decimal(20,7) '+
+                ', SituacaoLeitura bigint '+
+                ', InstrumentoId bigint '+
+                ', Observacao varchar(200) '+
+                ', Barcode int '+
+                ', PRIMARY KEY (DataLeitura, InstrumentoId)' +
+                ')';
+            this._sql.executeNonQuery(command)
+                .then(() => { resolve(); })
+                .catch((err) => {
+                    reject(err);
+                    return;
+                })
+        });
+    }
+    private createLeituraValor(): Promise<any> {
+        return new Promise((resolve, reject) => {
+            let command = 'CREATE TABLE IF NOT EXISTS LeituraValor ' +
+                '( DataLeitura string ' +
+                ', InstrumentoId int '+
+                ', TemplateLeituraId bigint '+
+                ', Sequencial bigint '+
+                ', Valor decimal(20,7) '+
+                ', PRIMARY KEY (DataLeitura, InstrumentoId, TemplateLeituraId, Sequencial)' +
+                ')';
+            this._sql.executeNonQuery(command)
+                .then(() => { resolve(); })
+                .catch((err) => {
+                    reject(err);
+                    return;
+                })
+        });
     }
 }

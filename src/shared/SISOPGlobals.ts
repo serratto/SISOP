@@ -10,6 +10,7 @@ export class SISOPGlobals {
 
     /* Variables */
     public instrumentoSelecionado: any;
+    public static leituraSelecionada: any;
 
     public currentDateDime() {
         var tzoffset = (new Date()).getTimezoneOffset() * 60000; //offset in milliseconds

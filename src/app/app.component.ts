@@ -78,7 +78,13 @@ export class MyApp {
   }
 
   closeFilesToSISOP() {
-    this.nav.popToRoot();
-    this.storageManager.clearMobileData();
+    this._globals.setCurrentUHE
+    this.storageManager.clearMobileData().then(() => {
+      this.rootPage = InstalacaoSelectPage;
+      this.nav.popToRoot();
+    }).catch((err) => { console.log(err) })
+    // this.nav.setRoot(HomePage);
+    // this.nav.popToRoot();
+
   }
 }

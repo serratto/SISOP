@@ -151,6 +151,13 @@ table.tbSearch>tbody>tr>td>button>span{
     text-align: left !important;
     text-transform: none;
 }    
+table.tbSearch>tbody>tr>td.badge>button{
+    padding: 0px !important;
+}
+table.tbSearch>tbody>tr>td.badge>button>span>ion-badge{
+    color: map-get($colors, light) !important;
+    padding: 3px 6px !important;
+}
     
 /* Grid Erro */
 div.errTable{
