@@ -243,6 +243,37 @@ export class StorageManager {
         });
     }
 
+    public getInstrumentosByBarCode(barcode: string): Promise<any> {
+        let comm = " select i.id, m.sigla as 'modelo', " +
+            "substr('0000'|| i.numero,-4, 4) as 'numero'" +
+            ", e.nome as 'estado'" +
+            ", i.estadoid as 'estadoid'" +
+            ", m.id as 'modeloid' " +
+            ", ti.multiponto as 'multiponto' " +
+            ", ti.niveldagua as 'niveldagua' " +
+            ", ti.id as 'tipoInstrumentoId' " +
+            ", count(l.instrumentoid) as 'contaleitura' " +
+            " from instrumento i " +
+            " join modelos m on i.modeloId = m.id " +
+            " join estados e on i.estadoId = e.id " +
+            " join tipoinstrumento ti on ti.id = i.tipoinstrumentoid" +
+            " left outer join leitura l on l.InstrumentoId = i.id" +
+            " where i.codigoBarra = ? " +
+            " group by  " +
+            "i.id, m.sigla, substr('0000'|| i.numero,-4, 4) " +
+            ", e.nome, i.estadoid, m.id, ti.multiponto " +
+            ", ti.niveldagua, ti.id"
+            " order by i.numero " 
+            ;
+        let args = [];
+        args.push(barcode);
+        return new Promise((resolve, reject) => {
+            this._sql.executeQuery(comm, args)
+                .then((data) => resolve(data))
+                .catch((err) => reject(err));
+        });
+    }
+
     public getInstrumentosByTipoUHE(tipoInstrumentoId: number, usinaId: number): Promise<any> {
         let comm = " select i.id, m.sigla as 'modelo', " +
             "substr('0000'|| i.numero,-4, 4) as 'numero'" +

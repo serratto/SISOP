@@ -69,11 +69,12 @@
   </table>
   <ion-item no-padding>
     <ion-buttons item-end>
+      <button ion-button icon-only small color="danger" (click)="gotoZero()" [disabled]="prevEnabled()?'':'disabled'">
+        <ion-icon name='rewind'></ion-icon>
+      </button>
       <button ion-button icon-only small color="danger" (click)="prev()" [disabled]="prevEnabled()?'':'disabled'">
         <ion-icon name='arrow-dropleft'></ion-icon>
       </button>
-    </ion-buttons>
-    <ion-buttons item-end>
       <button ion-button icon-only small color="danger" (click)="next()" [disabled]="nextEnabled()?'':'disabled'">
         <ion-icon name='arrow-dropright'></ion-icon>
       </button>

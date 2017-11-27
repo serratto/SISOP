@@ -14,12 +14,3 @@ export * from './leitura/leitura-leitura-multiponto/leitura-leitura-multiponto';
 export * from './leitura/leitura-leitura-erro/leitura-leitura-erro';
 export * from './leitura/leitura-ultimas12/leitura-ultimas12';
 export * from './leitura/leitura-ultimas12-detalhe/leitura-ultimas12-detalhe';
-
-
-export * from './instrumento-detail-home/instrumento-detail-home';
-export * from './instrumento-detail-historico/instrumento-detail-historico';
-export * from './instrumento-detail-historico-detail/instrumento-detail-historico-detail';
-export * from './instrumento-detail-detail/instrumento-detail-detail';
-export * from './instrumento-detail-leitura-campanha/instrumento-detail-leitura-campanha';
-export * from './instrumento-detail-leitura-leitura/instrumento-detail-leitura-leitura';
-export * from './instrumento-detail-leitura-erro/instrumento-detail-leitura-erro';

@@ -1,7 +1,11 @@
 import { Component } from '@angular/core';
-import { IonicPage, NavController, NavParams, ModalController, AlertController } from 'ionic-angular';
+import {
+  IonicPage, NavController, App,
+  NavParams, ModalController,
+  AlertController, ToastController
+} from 'ionic-angular';
 import { Events } from 'ionic-angular';
-import { LeituraLeituraErroPage } from "../../pages";
+import { LeituraLeituraErroPage, SelectInstrumentoHomePage } from "../../pages";
 import { SISOPGlobals, StorageManager } from "../../../shared/shared";
 
 import _ from 'lodash';
@@ -36,9 +40,11 @@ export class LeituraLeituraMultipontoPage {
 
   constructor(public navCtrl: NavController,
     public navParams: NavParams,
+    private app: App,
     private events: Events,
     private modalController: ModalController,
     private stMan: StorageManager,
+    private toast: ToastController,
     private alert: AlertController) {
     this._globals = new SISOPGlobals();
     this.parms = this.navParams.data;
@@ -324,6 +330,12 @@ export class LeituraLeituraMultipontoPage {
     return this.temLeitura ? 'mostra' : 'naoMostra';
   }
 
+  gotoZero() {
+    this.updateArrayAccordingToCurrent();
+    this.rowId = 0;
+    this.setCurrentAccordingToIdx();
+  }
+
   prev() {
     this.updateArrayAccordingToCurrent();
     this.rowId = this.rowId - 1;
@@ -490,7 +502,25 @@ export class LeituraLeituraMultipontoPage {
         prom.push(this.stMan.insertLeituraValor(lv).catch((err) => Promise.reject(err)));
 
       }
-      Promise.all(prom).then(() => console.log('salvou')).catch((err) => console.log(err));
+      Promise.all(prom).then(() => {
+        let t = this.toast.create({
+          message: 'Dados atualizados com sucesso.',
+          duration: 3500,
+          position: 'bottom',
+          cssClass: 'success'
+        });
+        t.present().then(() => {
+          this.app.getRootNav().push(SelectInstrumentoHomePage);
+        });
+      }).catch((err) => {
+        let alert = this.alert.create({
+          title: 'Erro',
+          cssClass: 'alert-danger',
+          message: 'Erro ao gravar: ' + err,
+          buttons: ['Ok']
+        });
+        alert.present();
+      });
     });
   }
 }

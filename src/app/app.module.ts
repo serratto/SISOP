@@ -28,15 +28,7 @@ import {
   LeituraCampanhaPage, LeituraUltimas12Page, LeituraUltimas12DetalhePage,
   LeituraInstrumentoPage, LeituraLeituraErroPage
 } from '../pages/pages';
-/* transition */
-import {
-  InstrumentoDetailHomePage, InstrumentoDetailDetailPage,
-  InstrumentoDetailHistoricoPage,
-  InstrumentoDetailHistoricoDetailPage,
-  InstrumentoDetailLeituraLeituraPage,
-  InstrumentoDetailLeituraErroPage,
-  InstrumentoDetailLeituraCampanhaPage
-} from '../pages/pages';
+
 
 /* Global Vars module */
 import { SISOPGlobals, SISOPEnvironment } from '../shared/shared';
@@ -57,15 +49,7 @@ import { StorageManager, StorageSql, StorageWeb } from '../shared/shared';
     LeituraLeituraPage, LeituraLeituraMultipontoPage,
     LeituraCampanhaPage,
     LeituraUltimas12Page, LeituraUltimas12DetalhePage,
-    LeituraInstrumentoPage, LeituraLeituraErroPage,
-
-    /* transition */
-    InstrumentoDetailHomePage, InstrumentoDetailDetailPage,
-    InstrumentoDetailHistoricoPage,
-    InstrumentoDetailHistoricoDetailPage,
-    InstrumentoDetailLeituraLeituraPage,
-    InstrumentoDetailLeituraErroPage,
-    InstrumentoDetailLeituraCampanhaPage
+    LeituraInstrumentoPage, LeituraLeituraErroPage
   ],
   imports: [
     BrowserModule,
@@ -86,14 +70,7 @@ import { StorageManager, StorageSql, StorageWeb } from '../shared/shared';
     LeituraLeituraPage, LeituraLeituraMultipontoPage,
     LeituraCampanhaPage,
     LeituraUltimas12Page, LeituraUltimas12DetalhePage,
-    LeituraInstrumentoPage, LeituraLeituraErroPage,
-    /* transition */
-    InstrumentoDetailHomePage, InstrumentoDetailDetailPage,
-    InstrumentoDetailHistoricoPage,
-    InstrumentoDetailHistoricoDetailPage,
-    InstrumentoDetailLeituraLeituraPage,
-    InstrumentoDetailLeituraErroPage,
-    InstrumentoDetailLeituraCampanhaPage
+    LeituraInstrumentoPage, LeituraLeituraErroPage
   ],
   providers: [
     StatusBar,

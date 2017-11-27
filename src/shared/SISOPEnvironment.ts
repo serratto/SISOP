@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { Device } from '@ionic-native/device';
+// import { Device } from '@ionic-native/device';
 
 @Injectable()
 export class SISOPEnvironment {

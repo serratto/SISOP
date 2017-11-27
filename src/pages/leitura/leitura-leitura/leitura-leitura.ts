@@ -1,7 +1,11 @@
 import { Component } from '@angular/core';
-import { IonicPage, NavController, NavParams, ModalController, AlertController } from 'ionic-angular';
+import {
+  IonicPage, NavController, App,
+  NavParams, ModalController, ToastController,
+  AlertController
+} from 'ionic-angular';
 import { Events } from 'ionic-angular';
-import { LeituraLeituraErroPage } from "../../pages";
+import { LeituraLeituraErroPage, SelectInstrumentoHomePage } from "../../pages";
 import { SISOPGlobals, StorageManager } from "../../../shared/shared";
 
 import _ from 'lodash';
@@ -32,6 +36,7 @@ export class LeituraLeituraPage {
 
   constructor(public navCtrl: NavController, public navParams: NavParams,
     private events: Events, private modalController: ModalController,
+    private app: App, private toast: ToastController,
     private stMan: StorageManager,
     private alert: AlertController) {
     this._globals = new SISOPGlobals();
@@ -351,7 +356,25 @@ export class LeituraLeituraPage {
         }
         prom.push(this.stMan.insertLeituraValor(lv).catch((err) => Promise.reject(err)));
       }
-      Promise.all(prom).then(() => alert('salvou')).catch((err) => console.log(err));
+      Promise.all(prom).then(() => {
+        let t = this.toast.create({
+          message: 'Dados atualizados com sucesso.',
+          duration: 3500,
+          position: 'bottom',
+          cssClass: 'success'
+        });
+        t.present().then(() => {
+          this.app.getRootNav().push(SelectInstrumentoHomePage);
+        });
+      }).catch((err) => {
+        let alert = this.alert.create({
+          title: 'Erro',
+          cssClass: 'alert-danger',
+          message: 'Erro ao gravar: ' + err,
+          buttons: ['Ok']
+        });
+        alert.present();
+      });
     });
   }
 }
