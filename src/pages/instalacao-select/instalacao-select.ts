@@ -79,7 +79,7 @@ export class InstalacaoSelectPage {
           this.fillUhesDisponiveis(fileList, uhe);
         });
     }
-  }
+  } 
 
   fillUhesDisponiveis(fileList: Array<any>, uhe: any) {
     var order = _.sortBy(fileList, [function (o) { return o.name; }]);
