@@ -23,20 +23,20 @@ export class StorageLoadData {
         return new Promise((resolve, reject) =>
             Promise.all(
                 [
-                    this.carregaFileManager(jsonData),
-                    this.carregaEstados(jsonData),
-                    this.carregaTemplateLeitura(jsonData),
-                    this.carregaModeloInstrumentoTemplateLeitura(jsonData),
-                    this.carregaSituacaoLeitura(jsonData),
-                    this.carregaVariavelLeituraSituacao(jsonData),
-                    this.carregaTipoInstrumento(jsonData),
-                    this.carregaTipoInstrumentoPorInstalacao(jsonData),
-                    this.carregaTipoModelos(jsonData),
-                    this.carregaEstruturaLocalizacao(jsonData),
-                    this.carregaSecao(jsonData),
-                    this.carregaElemento(jsonData),
-                    this.carregaInstrumento(jsonData),
-                    this.carregaLabelLeitura(jsonData)
+                    this.carregaFileManager_01(jsonData),
+                    this.carregaEstados_02(jsonData),
+                    this.carregaTemplateLeitura_03(jsonData),
+                    this.carregaModeloInstrumentoTemplateLeitura_04(jsonData),
+                    this.carregaSituacaoLeitura_05(jsonData),
+                    this.carregaVariavelLeituraSituacao_06(jsonData),
+                    this.carregaTipoInstrumento_07(jsonData),
+                    this.carregaTipoInstrumentoPorInstalacao_08(jsonData),
+                    this.carregaTipoModelos_09(jsonData),
+                    this.carregaEstruturaLocalizacao_10(jsonData),
+                    this.carregaSecao_11(jsonData),
+                    this.carregaElemento_12(jsonData),
+                    this.carregaInstrumento_13(jsonData),
+                    this.carregaLabelLeitura_14(jsonData)
                     // this.carregaUltimas12Leituras(jsonData)
                 ])
                 .then(() => { resolve(); })
@@ -45,7 +45,7 @@ export class StorageLoadData {
                     reject(JSON.stringify(err));
                 }));
     }
-    private carregaFileManager(jsonData: object): Promise<any> {
+    private carregaFileManager_01(jsonData: object): Promise<any> {
         return new Promise<any>((resolve, reject) => {
             let command = 'insert into FileManager (uheId, filetimestamp, ' +
                 'qtinstrumentos) ' +
@@ -55,10 +55,10 @@ export class StorageLoadData {
             jsonData['QtInstrumentos']];
             this._sql.executeQuery(command, arg)
                 .then((res) => resolve(res))
-                .catch((err) => reject(err));
+                .catch((err) => reject("OP-09: " + err));
         });
     }
-    private carregaEstados(jsonData: object): Promise<any> {
+    private carregaEstados_02(jsonData: object): Promise<any> {
         var args = [];
         let command = 'insert or replace into Estados (id, nome) values ';
         _.forEach(jsonData['Estados'], function (estado) {
@@ -71,12 +71,11 @@ export class StorageLoadData {
             this._sql.executeQuery(command, args)
                 .then(() => { resolve(); })
                 .catch((err) => {
-                    reject(err);
-                    return;
+                    reject("OP-02: " + err);
                 });
         });
     }
-    private carregaTemplateLeitura(jsonData: object): Promise<any> {
+    private carregaTemplateLeitura_03(jsonData: object): Promise<any> {
         var args = [];
         let command = 'insert or replace into TemplateLeitura ' +
             '(id, tipoInstrumentoId, sequencia, sigla, nome)'
@@ -94,12 +93,11 @@ export class StorageLoadData {
             this._sql.executeQuery(command, args)
                 .then(() => { resolve(); })
                 .catch((err) => {
-                    reject(err);
-                    return;
+                    reject("OP-03: " + err);
                 });
         });
     }
-    private carregaModeloInstrumentoTemplateLeitura(jsonData: object): Promise<any> {
+    private carregaModeloInstrumentoTemplateLeitura_04(jsonData: object): Promise<any> {
         var args = [];
         let command = 'insert or replace into ModeloInstrumentoTemplateLeitura ' +
             '(modeloInstrumentoId, templateLeituraId)'
@@ -114,12 +112,11 @@ export class StorageLoadData {
             this._sql.executeQuery(command, args)
                 .then(() => { resolve(); })
                 .catch((err) => {
-                    reject(err);
-                    return;
+                    reject("OP-04: " + err);
                 });
         });
     }
-    private carregaSituacaoLeitura(jsonData: object): Promise<any> {
+    private carregaSituacaoLeitura_05(jsonData: object): Promise<any> {
         var args = [];
         let command = 'insert or replace into SituacaoLeitura ' +
             '(id, tipoInstrumentoId, sigla, nome)'
@@ -136,12 +133,11 @@ export class StorageLoadData {
             this._sql.executeQuery(command, args)
                 .then(() => { resolve(); })
                 .catch((err) => {
-                    reject(err);
-                    return;
+                    reject("OP-05: " + err);
                 });
         });
     }
-    private carregaVariavelLeituraSituacao(jsonData: object): Promise<any> {
+    private carregaVariavelLeituraSituacao_06(jsonData: object): Promise<any> {
         var args = [];
         let command = 'insert or replace into VariavelLeituraSituacao ' +
             '(tipoInstrumentoId, situacaoLeituraId, modeloInstrumentoId, templateLeituraId, unidadeMedida)'
@@ -159,12 +155,11 @@ export class StorageLoadData {
             this._sql.executeQuery(command, args)
                 .then(() => { resolve(); })
                 .catch((err) => {
-                    reject(err);
-                    return;
+                    reject("OP-06: " + err);
                 });
         });
     }
-    private carregaTipoInstrumento(jsonData: object): Promise<any> {
+    private carregaTipoInstrumento_07(jsonData: object): Promise<any> {
         var args = [];
         let command = 'insert or replace into TipoInstrumento ' +
             '(id, sigla, nome, multiponto, niveldagua)'
@@ -182,12 +177,11 @@ export class StorageLoadData {
             this._sql.executeQuery(command, args)
                 .then(() => { resolve(); })
                 .catch((err) => {
-                    reject(err);
-                    return;
+                    reject("OP-07: " + err);
                 });
         });
     }
-    private carregaTipoInstrumentoPorInstalacao(jsonData: object): Promise<any> {
+    private carregaTipoInstrumentoPorInstalacao_08(jsonData: object): Promise<any> {
         var args = [];
         let command = 'insert or replace into TipoInstrumentoPorInstalacao ' +
             '(usinaId, tipoInstrumentoId)'
@@ -203,12 +197,11 @@ export class StorageLoadData {
             this._sql.executeQuery(command, args)
                 .then(() => { resolve(); })
                 .catch((err) => {
-                    reject(err);
-                    return;
+                    reject("OP-08: " + err);
                 });
         });
     }
-    private carregaTipoModelos(jsonData: object): Promise<any> {
+    private carregaTipoModelos_09(jsonData: object): Promise<any> {
         var args = [];
         let command = 'insert or replace into Modelos ' +
             '(id, sigla, nome)'
@@ -224,12 +217,11 @@ export class StorageLoadData {
             this._sql.executeQuery(command, args)
                 .then(() => { resolve(); })
                 .catch((err) => {
-                    reject(err);
-                    return;
+                    reject("OP-09: " + err);
                 });
         });
     }
-    private carregaEstruturaLocalizacao(jsonData: object): Promise<any> {
+    private carregaEstruturaLocalizacao_10(jsonData: object): Promise<any> {
         var args = [];
         let command = 'insert or replace into EstruturaLocalizacao ' +
             '(id, nome)'
@@ -244,12 +236,11 @@ export class StorageLoadData {
             this._sql.executeQuery(command, args)
                 .then(() => { resolve(); })
                 .catch((err) => {
-                    reject(err);
-                    return;
+                    reject("OP-10: " + err);
                 });
         });
     }
-    private carregaSecao(jsonData: object): Promise<any> {
+    private carregaSecao_11(jsonData: object): Promise<any> {
         var args = [];
         let command = 'insert or replace into Secao ' +
             '(id, estruturaId, nome)'
@@ -265,12 +256,11 @@ export class StorageLoadData {
             this._sql.executeQuery(command, args)
                 .then(() => { resolve(); })
                 .catch((err) => {
-                    reject(err);
-                    return;
+                    reject("OP-11: " + err);
                 });
         });
     }
-    private carregaElemento(jsonData: object): Promise<any> {
+    private carregaElemento_12(jsonData: object): Promise<any> {
         var args = [];
         let command = 'insert or replace into Elemento ' +
             '(id, secaoId, nome)'
@@ -286,12 +276,11 @@ export class StorageLoadData {
             this._sql.executeQuery(command, args)
                 .then(() => { resolve(); })
                 .catch((err) => {
-                    reject(err);
-                    return;
+                    reject("OP-12: " + err);
                 });
         });
     }
-    private carregaInstrumento(jsonData: object): Promise<any> {
+    private carregaInstrumento_13(jsonData: object): Promise<any> {
         var prom = [];
         for (var index = 0; index < jsonData['Instrumentos'].length; index++) {
             let item = jsonData['Instrumentos'][index];
@@ -320,11 +309,11 @@ export class StorageLoadData {
 
             prom.push(this._sql.executeQuery(command, args)
                 .then(() => { Promise.resolve() })
-                .catch((err) => Promise.reject(err)));
+                .catch((err) => Promise.reject("OP-13: " + err)));
         }
         return Promise.all(prom);
     }
-    private carregaLabelLeitura(jsonData: object): Promise<any> {
+    private carregaLabelLeitura_14(jsonData: object): Promise<any> {
         var prom = [];
         for (var index = 0; index < jsonData['Instrumentos'].length; index++) {
             let instrumento = jsonData['Instrumentos'][index];
@@ -341,7 +330,7 @@ export class StorageLoadData {
 
                 prom.push(this._sql.executeQuery(command, args)
                     .then(() => { Promise.resolve() })
-                    .catch((err) => Promise.reject(err)));
+                    .catch((err) => Promise.reject("OP-14: " + err)));
             }
         }
         return Promise.all(prom);
