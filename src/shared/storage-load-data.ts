@@ -41,7 +41,7 @@ export class StorageLoadData {
                 ])
                 .then(() => { resolve(); })
                 .catch((err) => {
-                    console.log('at carregaCampanhaNoDB', err);
+                    console.log('at carregaCampanhaNoDB', err); 
                     reject(JSON.stringify(err));
                 }));
     }
