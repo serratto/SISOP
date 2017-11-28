@@ -72,9 +72,9 @@ export class InstalacaoSelectPage {
         .then(uhe => {
           var fileList: Array<{ name: string }>;
           fileList = [];
-          fileList.push({ name: '01_UHE Jurumirim.json' });
-          fileList.push({ name: '02_UHE Chavantes.json' });
-          fileList.push({ name: '03_UHE Salto Grande.json' });
+          // fileList.push({ name: '01_UHE Jurumirim.json' });
+          // fileList.push({ name: '02_UHE Chavantes.json' });
+          // fileList.push({ name: '03_UHE Salto Grande.json' });
           fileList.push({ name: '07_UHE Taquarucu.json' });
           this.fillUhesDisponiveis(fileList, uhe);
         });

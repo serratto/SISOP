@@ -160,10 +160,11 @@ table.tbSearch>tbody>tr>td.badge>button>span>ion-badge{
 }
     
 /* Grid Erro */
-div.errTable{
+div.errTable, div.confTable{
 }
 
-div.errTable>div.errHead{
+div.errTable>div.errHead,
+div.confTable>div.errHead{
     padding: 10px;
     font-size: 18px;
     font-weight: 700 !important; 
@@ -172,7 +173,13 @@ div.errTable>div.errHead{
     padding: 20px;
     text-align: center;
 }    
-    
+
+div.confTable>div.errHead{
+    background-color:  map-get($colors, light);
+}    
+
+
+div.confTable>div>div.labelErr,
 div.errTable>div>div.labelErr{
     font-size: 14px !important;
     font-weight: 700 !important; 
@@ -189,10 +196,13 @@ div.errTable>div>div.danger{
     
 div.errTable>div>div.labelErr>span.errTitle{
 }
+div.confTable>div>div.labelErr>span.errMsg,
 div.errTable>div>div.labelErr>span.errMsg{
     font-weight: 400 !important; 
     padding-left: 10px;
 }
+
+
 
 
 ion-item.subtitle{
